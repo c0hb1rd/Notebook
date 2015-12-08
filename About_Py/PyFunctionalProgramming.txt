@@ -1,0 +1,193 @@
+函式编程：把计算视为函数而非指令，纯函数式编程不需要变量，没有副作用，测试简单，支持高阶函数，代码简洁
+
+Py函数式编程：py不是纯函数式编程，允许有变量，py支持高阶函数，可以将函数作为变量传入（参数），支持闭包，意味着可以返回函数，有限度地支持匿名函数
+
+高阶函数：变量可以指向函数（函数赋值给变量），本质上函数名其实就是个变量，意味着abs()(求绝对值) 如果abs指向 len()，那么abs就不再是返回绝对值，而是返回长度（abs = len()），并且高阶函数能把函数当成参数接收，因为函数参数接受一个变量名，而本质上是接收这个变量指向的内容来操作，而变量可以指向函数，所以函数可以当成实际参数
+高阶函数例子：
+def add(x, y, f)
+	return f(x) + f(y)
+total = add(-5, 8, abs)
+print total
+--------------------
+13
+--------------------
+以上，把abs()（本质是指向一个返回绝对值的函数体的变量）当做参数传递，传递时只需要函数名（本质是个变量）
+
+map()函数：接受一个函数和list类型，把函数作用在没一个list成员
+
+reduce()函数：接受一个有两个参数的计算函数和list类型，首先把list成员前两个当作参数给函数调用，再将返回的结果与list下一个成员当作参数调用，以此类推，reduce还接受第三个参数，默认是none，作用是作为计算的初始值，也就是首先将reduce的第三个参数与list的一个成员当作参数给函数调用
+比如：
+def total(x, y)
+	return x + y
+reduce(total, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+reduce(total, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 100)
+
+filter()函数：接受一个判断函数和list类型，过滤掉判断函数返回false的成员，返回剩余的成员组成的新list
+比如，过滤出range(返回list类型)内平方根是整数的数：
+def is_sqrt(x):
+	result = int(math.sqrt(x))
+	return r * r == x
+filter(is_sqrt, range(1, 101))
+--------------------------------
+[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+--------------------------------
+
+sorted()函数：可以对list类型进行排序，默认参数为一个列表，第二个可选参数为排列规则的函数，默认排列规则为从小到大排列成员 return -1, 1, 0来判断，当比较的两个成员返回的是-1时，两成员位置调换，0表示相等位置不变，1表示排列位置无误，位置不变，所以排列关键决定于返回-1的条件
+比如：
+def cmp_case(s1, s2):
+	if s1 > s2:
+		return -1
+	if s1 < s2:
+		reutnr 1
+	else:
+		return 0
+print sorted([3, 6, 1, 2], cmp_case)
+----------------------------------
+[6,3,2,1]
+----------------------------------
+个人实验完后，因为1和0的作用其实是相同的，所以只需要保留一条全局return 0或者1就可以，因为本质上没起到位置改变，保留的原因只是为了-1条件不成立是有一个返回值高速函数位置不变，而从-1可以直接当作规则看待，比如上面例子的意思是要s1大于s2，也就是从大到小排列如果用if s1 < s2: return -1，这个规则表示要s1小于s2，从小到大排列
+比如：
+def cmp_case(s1, s2):
+	if s1 < s2:
+		return -1
+	return 0
+print sorted([3, 6, 1, 2], cmp_case)
+----------------------------------
+[1,2,3,6]
+----------------------------------
+规则为要s1小于s2，也就是从小到大，然后只需要一条return 0／1来保证有返回值即可
+
+return函数的函数：返回一个函数，延缓计算作用、保护函数防止误操作调用（无法移出外部单独调用，因为接受外部函数的参数当作实际参数），比如：
+def calc_sum(List):
+	def result():
+		total = sum(List)
+	return result
+L = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+Sum = calc_sum(L)
+total = Sum()
+print total  # 等价于 print Sum()
+------------------------------------
+55
+------------------------------------
+
+闭包：发生在一个return函数的函数里，内部函数使用的变量是外部函数的局部变量这种行为就是闭包，使得内部函数无法单独使用，且闭包函数内部不要使用任何循环变量，会影响实际结果，循环遍历的那个变量那块内存是一直存在的，所以每一次都会对内存里面的内容更新，导致最后的结果不如意
+比如：
+def count(len):
+	fs = []
+	for x in range(0, len):
+		def f(i):
+			def s():
+				return i * i
+			return s
+		r = f(x)
+		fs.append(r)
+	return fs
+不能：
+def count(len):
+	fs = []
+	for x in range(0, len):
+		def f():
+			return x * x
+		fs.append(f)
+	return fs
+--------------------------
+这样调用的x是循环里面的，上面的例子则是当作函数参数调用再返回，所以不影响结果
+--------------------------
+
+匿名函数：妈蛋，基本就是C的dmacro函数嘛，只是define要定义个名字，而py是用关键字lambda，直接追加行参和替换代码
+比如：
+C  -> #define max(x, y) ((x) > (y) ? (x) : (y))
+Py -> max = lambda x, y: x if (x) > (y) else y 
+----------------------------------------
+效果是相同的，只是py是类赋值语句，可以把匿名函数赋值给某个变量（理解为指针指向，所以C也是可以实现匿名函数的，就是函数指针嘛）
+
+function decorator：函数装饰器，定义了一个函数，想在运行时动态增加功能，又不想改动函数本身的代码，这个是时候就可以用一个叫做函数装饰器的函数(接受参数为函数的函数),重新把要加入的功能和传入函数一起包装起来，而py有一种@语法，可以更方便的原函数包装成新函数而省去赋值语句，还有可变参数*args(可变tuple), **kw(可变dict)
+比如：
+def log(f):
+	def fn(*args, **kw):
+		print 'Call: ' + f.__name__ + '()...'
+		print 'The resule is:'
+		return f(*args, **kw)
+	return fn
+
+@log
+def maxi(x, y):
+	if x > y:
+		return x
+	else:
+		return y
+
+function decorator带参数版本：说白了就是在多一层decorator，变成三层嵌套，新的那一层可以定义对应参数的函数体
+比如：
+def log(args):
+	def ff(f):
+		def fs(*args, **kw):
+			if args xxxx:
+				#method...
+			else:
+				#method...
+			print 'Call:' + f.__name__ + '()...'
+			return f(*args, **kw)
+		return fs
+	return ff
+
+@log(args)
+def maxi(x, y):
+	if x > y:
+		return x
+	else:
+		return y
+---------------------------------------------
+等价于：
+	还无法完全理解拆分编写，后期补全，占坑
+---------------------------------------------
+
+完善decorator：decotator装饰过的函数，使用*.__name__ 所显示的函数名是decorator返回的那个是函数名，因此对于依赖函数名执行的代码会炸，因此，we need to完善这玩意，说白了就是让调用者都不知道这个函数被decorator整过一遍，这里就要用到py的一个模块 functools （顾名思义，函数工具），但是函数的参数由于用了*args和**kw，因此函数参数的信息无可避免的be changed forever
+比如：
+#used the functools.wraps,arguments is a function var_name,protecting this function all information, but except any information about arguments 
+import functools
+
+def log(unit):
+	def ff(f):
+		@funtools.wraps(f)	#'f' a name of function which is the functools.wraps wanna protecting
+		def fs(*args, **kw):
+			if unit xxxx:
+				#method...
+			else:
+				#method...
+			return f(*args, **kw)
+		return fs
+	return ff
+
+偏函数：我的理解是偏好偏爱的意思，就像一些软件之类的东西都有一个偏好设置，说白了就是自己设置成自己喜欢的风格的意思，而偏函数同样的道理，就是把函数设置成一种新的风格，偏向使用者想要使用的功能，模块 functools里面的partial就提供了这样的一个功能，改变那些有默认参数的函数的默认参数值，重包装成一个偏向使用者要使用的功能的函数，例如int()的默认参数值为10，表示强制转换为10进制，这时候可以functools.partial(int, 10),这个语句返回一个函数体，因此可以当右值，赋值给某个变量使变量变为函数
+比如：
+import functools
+
+int2 = functools.partial(int, base = 2)	#partial accept two arguments,first is a function__name__, the next is this function default arguments values
+
+print int2('1010')
+------------------------------
+10
+------------------------------
+不仅如此，它的更大的意义是可以给多参数函数的参数上默认值，这样调用的时候就不需要键入太多的实参而waste of time
+比如：
+
+模块：import关键字后面接的就是模块的名字，本质上是一个*.py的文件，类似C的头文件, 执行一遍后，module.py会生成一个moudle.pyc的文件，这个时候只要保存*.pyc文件就可以，类是C编译后的*.obj文件，下次使用无需再编译，link就可以
+
+包：其实就是个文件目录名，里面放了模块，要import包里面的模块，格式为packageName.moduleName，多层就多个名字，没一层都要有一个文件名字为‘__init__.py’，即使这是个空文件也要下，这样才能初始化引导到最里层的那个module
+比如：
+第一层目录，路径为：test1
+	内容：__init__.py
+第二层目录，路径为：test2
+	内容：__init__py, moduleName.py
+import test1.test2.moduleName
+
+from，import与as：像上面那个例子，模块名字太长，每次使用里面的函数方法都要加那么一大串所属对象是没道理的，因此有了from和as，as是重命名模块名字，可以把一大串缩减为一个特定字符串，from与import联用，可以from 后接一个模块，再import模块里面要用到的那些方法函数，就可以再调用是不加那么一大串，当然其它那些没有import的函数方法就没法使用
+比如：
+from test1.test2.moduleName import function1Name, function2Name, function3Name
+import test.test2.moduleName as rename
+
+py模块安装：先从pypi.python.org上search想要的模块名字，root权限中，用pip指令安装
+比如（kali）：pip-2.7 install moduleName.py
+
+That's all.

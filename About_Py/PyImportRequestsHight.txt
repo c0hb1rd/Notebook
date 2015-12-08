@@ -1,0 +1,145 @@
+0x01 会话对象
+1、会话对象能够让你跨请求保持某些参数，它会在同一个session会话实例发出的所有请求之间保持cookies，session对象具有主要的requests API的所有方法
+比如：
+s = requests.Session()    # 实例化一个session对象
+s.get('http://httpbin.org/cookies/set/sessioncookie/123456789')	
+r = s.get('http://httpbin.org/cookies')
+-----------------------------------------------------------
+第二个url虽然参数不全，但是session对象会保持跨请求参数，所以url_1和url_2得到的内容是一样的（参数其实是相同的）
+----------------------------------------------------------
+
+2、通过对会话对象的属性提供value来为请求方法提供default数据
+比如：
+s = requests.Session()
+s.auth('user', 'pass')
+s.headers.update({'x-text_1':'true'})
+s.get('url',headers={'x-text_2':'true'})
+-----------------------------------------------------------
+get方法虽然没有x-text_1，但是其实之前已经给headers更新了x-text_1，任何传请求方法的的字典都会与会话层数据合并，而方法层的数据会覆盖会话的参数，所以上面的example的headers中，保存了x-text_1和x-text_2两个数据
+-----------------------------------------------------------
+ps：如果想删除字典中一个值，只需要把对应键的值改为None就可以，比如上面的example，去掉x-text_2，就是headers[x-text_2] = None
+
+0x02 请求与响应对象
+1、任何时候调用requests.*()都在做两件事，第一是构建一个Request请求对象，该对象被发送到对应的url服务器请求或query一些资源，第二是通过Request对象返回一个Response对象，这个Response include 了server里的所有infomation，也包含原来create的Request对象
+比如：
+r = requests.get(url)
+r.headers
+r.request.headers
+-----------------------------------------------------------
+第二行代码返回了Response对象的请求头
+第三行代码返回了Request对象的请求头
+-----------------------------------------------------------
+
+0x03 Prepared Requests(预备请求，我的理解是dafault请求)
+1、每一个你接收的来自API或者会话调用后return的Response，这个发出的请求实际上是归属与PrepareRequests（预备请求，同上，我的理解是default请求），所以如果你想在sending request之前对请求头做修改，可以通过改这个PrepareRequests
+比如：
+from requests import Request, Session
+s = Session()
+reqt = Request('GET', url,
+	data=data,
+	headers=header
+)
+prepped = reqt.prepare()
+
+#do something with prepped.body
+#do something with prepped.headers
+
+resp = s.send(prepped,
+		stream=stream,
+		verify=verify,	# 验证
+		proxies=proxies,	#代理
+		cert=cert,	#数字证书
+		timeout=timeout
+)
+-----------------------------------------------------------
+上面的代码会丢失一些Session对象的一些优势特性，比如cookies，所以不要用Request.prepare，使用Session.prepare_request()来代替它
+比如：
+from requests import Request, Session
+s = Session()
+reqt = Request('GET', url,
+	data=data,
+	headers=headers
+)
+
+prepped = s.prepare_request(reqt)
+
+# do something with prepare.body
+# do something with prepare.headers
+
+resp = s.send(prepped,
+		stream=stream,
+		verify=verify,
+		proxies=proxies,
+		cert=cert,
+		timeout=timeout
+)
+-----------------------------------------------------------
+两个代码区别在于用了requests.Request.prepare()会丢失一些特性，而Session.prepare_request()会在原来的特性上新增所需要的改动
+-----------------------------------------------------------
+
+0x04 SSL证书验证
+1、Requests可以为HTTPS的request验证SSL证书，就像Web浏览器，相关参数为verify
+比如：
+requests.get(url, verify=True)
+requests.get(url, verify=True)
+-----------------------------------------------------------
+第一行代码执行SSL验证
+第二行代码忽略SSL验证
+ps：如果验证成功，会返回状对应status_code，错误会抛出SSLError异常
+-----------------------------------------------------------
+2、default情况下verify设置为True，且仅限与主机证书，要想指定某个本地证书用作客户端证书，可以用cert参数
+比如：
+requests.get(url, cert=PATH)    # PATH is strings
+-----------------------------------------------------------
+验证结果同上
+-----------------------------------------------------------
+
+0x05 响应体内容工作流
+1、default中，当request发出后，response响应体和响应头会立即被下载，可以通过stream参数覆盖这个行为，推迟下载response响应体直到访问Response.content属性
+比如：
+tarball_url = 'http://www.test.com'
+r = requests.get(tarball_url, stream=True)
+-----------------------------------------------------------
+stream为true，响应头被下载响应内容没被下载
+-----------------------------------------------------------
+2、要访问响应内容，可以通过用requests.content访问
+比如：
+r = requests.get(url, stream=True)
+rct = r.content
+-----------------------------------------------------------
+3、
+-----------------------------------------------------------------------------------------------------------
+--------------------------------------------这一部分看不懂，占坑-------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+
+0x06 保持活动状态（持久链接，应该是connect那一块的，keep-alive）
+1、对于urllib3，同一session内keep-alive是完全自动处理的
+-----------------------------------------------------------
+ps：因为响应提数据读取完毕链接才会被是释放为连接池，因此确保stream为false，或者用requests.conteng
+
+0x07 流式上传（流嘛，文件流，输入输出流那种流，意会之）
+1、requests支持流式上传，只需要把类文件对象传个data参数做value就可以
+比如：
+with open(streamFileName) as f:
+	requests.post(url, data=f)
+-----------------------------------------------------------
+above code就是把流post给url
+-----------------------------------------------------------
+
+0x08 块编码请求
+1、对于request，支持分分块传输编码，可以自己造一个迭代器（定义一个函数，用yield），然后传给data，会自动迭代
+比如：
+def gen():
+	yield "This"
+	yield 'is'
+	yield 'a'
+	yield 'test'
+
+requests.post(url, data=gen())
+-----------------------------------------------------------
+gen()会自动迭代编码给post作为request
+-----------------------------------------------------------
+
+0x09 发送更多的多编码文件
+1、
+

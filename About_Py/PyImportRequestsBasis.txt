@@ -1,0 +1,198 @@
+0x01、发送请求：GET，POST，PUT，DELETE，HEAD，OPTIONS
+比如：
+r = requests.get(url)
+r = requests.post(url)
+r = requests.put(url)
+r = requests.delete(url)
+r = requests.head(url)
+r = requests.options(url)
+
+0x02、为url传递参数：有一个关键字params，可以通过传递字典给它，重新编码url，为url发送这些字典对应的键值
+比如：
+url = str(raw_input('Input url: '))
+values = {
+	'key1':'value1',
+	'key2':'value2'
+}
+r = requests.get(url, params=header)
+print r.url
+-----------------------------------------------------------
+Input url: http://www.test.com/
+http://www.test.com/?key2=value2&key1=value1
+-----------------------------------------------------------
+ps：字典中成员位置越靠前，发送位置越往后
+
+0x03、响应内容：requests.method后会接收服务器的response，用实例化方法text可以访问通过分析猜测response的chardet中的编码来自动编码文本，用encoding属性访问其使用的编码，并且可以通过改变encoding属性的值来改变其解码使用的编码，而对于charset没有值的response内容，则应先用encoding设置用来解码的编码，再用content访问其解码后的内容
+比如：
+1、text:
+r = requests.get(url)
+print r.encoding
+print r.text
+-----------------------------------------------------------
+输出response中的chardet值
+输出对应的解码后的文本
+-----------------------------------------------------------
+ps：这是用默认response中chardet的编码解码（如果没有设置charset就意味着乱码）
+2、content：
+r = requests.get(url)
+r.encoding = 'codding'    # for example: utf-9, gb2131
+print r.content
+-----------------------------------------------------------
+输出自定义设置的编码解码后的文本
+-----------------------------------------------------------
+ps：codecs模块可以注册自己创建的编码，再通过encoding就可以使用自己创建的编码
+
+0x04、Binary repsonse conent：对于非文本，可以以字节的方式访问请求响应体，就是直接用content打开后乱码的一般都是二进制文本，比如图片，影音文件，比如从html上拉的图片地址content后是二进制文本模式，保存后用.jpg等对于的图片格式后缀就可以访问，或者用Image模块将接收的二进制数据创建为一张图片
+比如：
+1、保存为.jpg:
+r = requests.get(url)
+fp = open('fileName.jpg', 'wb')    # open file with binary mode
+fp.write(r.content)
+fp.close()
+-----------------------------------------------------------
+以上，拉取图片内容，用二进制模式打开一个文件，再把二进制格式的内容保存进去，后缀为对应的图片格式后缀，这时就可以保存爬取到的图片到本地
+-----------------------------------------------------------
+2、Image模块将请求会的二进制数据创建为一张图片:
+from PIL import Image
+from StringIO import StringIO
+r = requests.get(url)
+i = Image.open(StringIO(r.content))
+-----------------------------------------------------------
+ps：我也搞不太懂，没用过，反正爬取图片用第一种就ok
+
+0x05、JSON response content：requests中的一个JSON解码器（javaScript数据交换格式）
+比如：
+r = requests.get(url)
+r.json()
+-----------------------------------------------------------
+如果解码失败，会抛出一个异常
+-----------------------------------------------------------
+
+0x06、Raw response content：当想获取原始的response响应content，就可以用raw访问，要这么做要确保初始请求中stream值为true，而将文本流保存到文件，则需要用iter_content
+比如：
+1、raw:
+r = requests.get(url)
+r.raw
+r.raw.read(nums)
+-----------------------------------------------------------
+read中的参数nums表示调用的\xNN个数，也就是字节数，用十六进制显示
+-----------------------------------------------------------
+2、保存文本流iter_content:
+r = requests.get(url)
+with open(fileName, 'wb') as fp:
+	for chunk in r.iter_content(chunk_size):
+		fp.write(chunk)
+fp.close()
+-----------------------------------------------------------
+我也不知道是什么鬼，就是把原始响应文本流下载到文件中就对了
+-----------------------------------------------------------
+
+0x07、普通GET请求头：就是定制header，比如User-Agent，cookies这些，也是个字典，把字典传给参数headers就可以了
+比如：
+headers = {
+	'User-Agent':'browserMethod',
+	'cookie':'cookieValue'
+}
+url = requests.get(url, headers=headers)
+-----------------------------------------------------------
+
+0x08、POST请求头：依然是个字典，把写好的字典传给参数data就可以了
+比如：
+datas{
+	'key1':'value1',
+	'key2':'value2'
+}
+r = requests.post(url, data=datas)
+-----------------------------------------------------------
+
+0x09、POST一个多部分（Multipart-encoded）编码的文件：关键字是files，也是个字典，字典的的值问二进制格式文本
+比如：
+files = {
+	'file':open('fileName.xls', 'rb')
+}
+r = requests.post(url, files=files)
+-----------------------------------------------------------
+也可以设置文件名，文件类型和请求头：
+比如：
+files = {
+	'file':('fileName.xls', open('fileName.xls', 'rb'), 'application/vnd.ms-excel', {'Expires':'0'})
+}
+r = requests.post(url, files=files)
+-----------------------------------------------------------
+也可以发送作文件来接收的字符串：
+files = {
+	'file':('report.csv', 'come,data,to,send\nanother,row,to,send\n')
+}
+r = requests.post(url, files=files)
+-----------------------------------------------------------
+ps:这三个我都看不懂，也不知道什么鬼，知道了就好，以后有用到回头溜一遍，反正关键字files
+-----------------------------------------------------------
+
+0x10、响应状态码：用status_code查询，一般200就是正常嘛，可以通过codes.ok来判断请求是否成功（非200响应，比如我大中华404），再通过raise_for_status()抛出异常
+比如：
+r = requests.get(url)
+r.status_code    # return response status code
+r.status_code == requests.codes.ok    # return True or False
+r.raise_for_status()    # 正常则返回None（200时），不正常就抛出对应的异常响应码
+
+0x11、响应头：用headers查看server response content，cookies则可以查看response的cookie
+比如：
+1、查看headers：
+r = requests.get(url)
+h = r.headers
+for k, v in h.items():
+	print k + ':' + v
+print h.get('key1')    # return value1
+-----------------------------------------------------------
+key1:value1
+key2:value2
+key3:value3
+......
+value1
+-----------------------------------------------------------
+2、快速查看cookie：
+r = requests.get(url)
+c = r.cookies
+print c
+-----------------------------------------------------------
+输出cookie内容
+-----------------------------------------------------------
+
+0x12、重定向请求历史：default下，除了HEAD，requests会自动处理所有重定向，用history方法追踪重定向，当然HEAD也可以启用重定向，要在allow_redirects的值改为True，同理，可以用值False禁用其它默认开启的重定向处理
+比如：
+1、非HEAD：
+r = requests.get(url)
+print r.history
+-----------------------------------------------------------
+输出重定向，一般是空，如http转到https，会有301
+-----------------------------------------------------------
+2、HEAD：
+r = requests.head(url, allow_redirects=True)
+print r.history
+-----------------------------------------------------------
+输出重定向，结果同上
+-----------------------------------------------------------
+
+0x13、超时：timeout参数可以设定超时，以秒为单位
+比如：
+r = redirects.get(url, timeout=1)
+-----------------------------------------------------------
+ps：timeout仅对连接过程有效，与响应体的下载无关
+-----------------------------------------------------------
+
+0x14、错误与异常：所有异常显示抛出都继承自requests.exceptions.RequestException
+举例：
+网络异常：如DNS查询失败，DOS（deny of server）等，抛出ConnectionError
+HTTP无效响应：抛出一个HTTPError异常
+请求超时：抛出一个TimeoutError
+超出设定的重定向次数：抛出一个TooManyRedirectsError
+
+总结：
+六种请求：get, post, put, delete, head, options
+参数：files, headers, cookies, params, data, allow_redirects, timeout
+查看：status_code, headers, url, encoding, cookies, history, raw
+编码设置：encoding
+文本内容：text, content
+异常：HTTPError, ConnectionError, TimeoutError, TooManyRedirectsError
+
+That's all.

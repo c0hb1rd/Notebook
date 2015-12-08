@@ -1,0 +1,142 @@
+author：荷兰人 guido van Rossuam
+
+feature：优雅、明确、简单
+
+what can it do：Web网站和各种网络服务、系统管理和脚本、作为“胶水”语言把其他语言开发的模块包装起来方便使用
+
+与C对比优缺点：运行速度慢（C神速），代码量非常少（C要实现各种ADT接口，代码量非常多），源码不能加密
+
+数据类型：动态脚本语言，不用声明特定数据类型，自动识别
+
+注释： # 号同一行为注释
+
+字符串形式：“ ''' ” 、“ "" ”、 “ '' ”共三种，第一种可以包第二第三种，第二第三则可以相互内嵌,比如： " '' "、' "" '
+
+raw字符串：字符串前加‘r’可以不用为特定符号加专义字符（'\'），比如：r'...'
+
+编码：-*- coding:utf-8 -*-,此语句丢在开头就可以告诉解释器用utf-8编码解释,或在字符串前家'u'，比如：u'...'
+
+整数浮点数：操作与C相同（有一数为浮点，值为浮点）
+
+布尔：值为首字母大写（c则是首字母小写），True 和 False，空、0和NONE为False，与C相同
+
+条件操作符：用e文表示（c为符号），and（&&）、or（||）、not（！）
+
+有序列表类型：
+list（列表）：用［］包含元素，正负索引操作，有操作函数append（增：var.append()），pop（删:var.pop()），insert(插入:var.insert())，或直接通过所以修改对应元素内容
+tuple（元组）：用（）包含元素，正负索引操作，无操作函数，一旦创建则无法对成员内容更改，注：单元素元组创建方法，tuple = （1,），后接‘,’号，因为（）有算术优先的功能，会被当成tuple = 1,然而并不是说不能改值，可以用类指针的操作，把地址的内容直接改了，因为tuple可以看成是一个const datatype *的指针，指向不能变，想办法绕过指向直接改值就可以
+
+if语句：编程语言就那个样，大同小异，py用的是‘：’和缩进来确定语句块而已
+if elif语句：与其它编程语言不同，py的else if 用的是elif
+
+for语句：与其他编程语言不同，声明格式类似java的for each，使用规范类似c99中判断变量可以在for地一个语句中声明，py也可以（py不用statement data type），比如：for i in range（10）
+ps：for可以迭代列表和元组，while则不可以
+
+while语句：不可以迭代，效果与其它编程语言并无差异
+
+break和continue：作用与其它编程语言并无差异
+
+dict字典类型：用｛｝包含，每个元素有两个成员，key（键）和value（值），statement style：dictionary = { key_1: value_1,  key_2: value_2 }，通过key访问值，比如：dictionary[key_1]访问key_1的值value_1，key可用于判断语句，比如：if key_1 in dictionary: print d[key_1]，还可以用函数get（），当key无定义时，返回空，有效则返回对应值，比如：dictionary.get(key_1) ,返回value_1或者None
+ps：dict中key不能重复并且不可变（意味着不能用list当成员，用字面值或常量），而且dict元素存放是无序的，占用内存高，但是访问快速，通过key访问value每个元素消耗的时间一样（不管是10个元素还是1000000个元素）
+
+dict是可变的，可以通过这样来添加新成员dictionary[key] = value，为dictionary中添加一个键为key，值为value的成员，如果key存在，则更新value内容
+
+set数据类型：接受一个list类型参数，并把list的元素当成set的元素，list中重复的元素set只出现一次（list中有三个1，1，1，set里面只会出现一次1），可以看作无value的dict，排列也是无序的，set无法通过索引直接访问元素内容，它的存在一般是为了判断list中有没有特定元素存在（存储机制和dict类似，因此查询速度很快），比如 name in set这种style，返回True或者False
+ps：set的一种特殊for遍历方式  
+注意到set的元素是tuple，因此 for 循环的变量被依次赋值为tuple
+s = set([('Adam', 95), ('Lisa', 85), ('Bart', 59)])
+L = ['Adam', 'Lisa', 'Bart']
+for x in s:
+	if x in L:
+		print x[0] + ':', x[1]
+	  
+def函数：与其他语言不同，py的函数用def定义不需要data type，参数也不需要data type，需要返回值时，则用return返回 ,当返回值大于一个时，它返回一个tuple类型，py函数有一种默认参数，意味着参数可加可不加，加了参数则会改变算法
+比如默认的int（）：
+def int(num, n = 10):
+	if n == 10:
+		return num(假设，实际为转换10进制算法)
+	else if n == 8:
+		return 0num(假设，实际为转换Octal进制算法)
+	else if n == 16:
+		return 0xnum（假设，实际为装换Hexadecimal算法） 
+py函数的可变参数比C简单粗暴多了，直接function(*args)，在参数前加'*'就搞定，比如：
+def average(*args):
+	sum = 0.0
+	if len(args) == 0:
+		return sum
+	for x in args:
+		sum = sum + x
+	return sum / len(args)
+ps：动态脚本语言就是爽。。。。（记住‘：’号和缩进）
+
+range()返回一个list类型，可以这样 L = range(1, 11)
+
+切片：这玩意list、tuple和str都可以，说白了就是分割range，于range一样，支持三个参数，最少一个，［a：b：c］，‘a’,'b','c'最少一个，‘a’代表起始索引，‘b’代表终止索引，‘c’代表跨步步数，切片操作非常灵活，脑洞必须大开
+比如：
+# 字符串参数首字母大写
+def firstCharUpper(s):
+	return s[0].upper() + s[1:]
+
+迭代：py的迭代（py中指用for循环遍历操作）也是非常灵活，任何有序或者无序的集合都可以迭代遍历，list、tuple、str、unicode、set和dict，都属于集合，都可以迭代
+
+enumerate枚举：这玩意很好玩，可以把一个集合的元素前添加一个对应的索引弄成一个tuple
+比如：
+L = ['a', 'b', 'c']
+s = []
+for x in enumerate(L)
+	s.append(x)
+
+print s
+-------------------
+[(0, 'a'), (1, 'b'), (2, 'c')]
+-------------------
+
+索引迭代：利用enumerate，制造索引
+比如：
+L = ['a', 'b', 'c']
+for index, name in enumerate(L):
+	print index + 1,‘-’，name
+-------------------
+1 - 'a'
+2 - 'b'
+3 - 'c'
+-------------------
+
+dict迭代：dict类型有两‘类’方法迭代，values()和itervalues()，items()和iteritems，前者是访问dict的值，区别在于一个返回list类型，一个只是单纯获取value，不浪费内存，后者是迭代dict成员，区别在于一个返回包含tuple的list类型来迭代，一个只是返回包含key和value的tuple类型，不浪费内存
+
+列表生成表达式：L = [x for x in range(x)]
+这是一条生成1到10的列表：
+L = [x for x in range(1, 11)]
+这是一条生成1*1,2*2,3*3,N*N的列表：
+L =[x * x for x in range(1, N)]
+这是一条生成1*2, 3*4, 5*6, (n * 2 - 1) * (n * 2)的列表
+L = [x * (x + 1) for x in range(1, N, 2)]
+
+复杂列表生成表达式之生成html表格:
+d = {'key1':value1, 'key2':value2,'key3':value3}
+def tablestyle(key, value):
+	return '<tr><td>%s</td><td>%s</td></tr>' % (key, value)
+
+table = [tablestyle(key, value) for key, value in d.iteritems()]
+
+print <table border="1">
+print <tr><th>key</th><th>value</th>
+print '\n'.join(table)
+print </table>
+---------------------------------
+将以上输出重定向到*.html文件下就可显示html表格
+ps: join()把list转换成str类型，格式为str().join(list)，str()为替代','的内容，这里为'\n'换行
+---------------------------------
+复杂列表生成表达式之剔除非字符串并返回大写：
+def toupper(L)
+	return [x.upper() for x in L if isinstance(x, str)]
+L = ['ste1', 'str2', 3]
+print toupper(L)
+---------------------------------
+['SRE1', 'STR2']
+---------------------------------
+
+多层for迭代列表生成表达式之生成对称的3位数（百位等于个位）：
+print [a + b + c for a  in range(100, 1000, 100) for b in range(0, 100, 10) for c in range(0, 10) if a / 100 == c]
+
+That's all.

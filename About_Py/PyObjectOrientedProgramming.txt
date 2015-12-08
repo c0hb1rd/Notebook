@@ -1,0 +1,443 @@
+面向对象编程：一种程序设计范式，把程序看做不同对象的相互调用，对现实世界建立对象模型
+
+面向对象基本思想：类和实例，类用于定义抽象数据类型，实例根据类的定义被创建出来
+
+py中的类：用class关键字定义，和java，c++一个尿性
+比如：
+class Person():
+	pass	#pass like return, expersion NULL
+
+py中的实例：用类实例化对象呗，还是和java，c++一个尿性
+比如：
+class Person():
+	pass
+
+Adma = Person()
+
+py中类的属性：动态语言大法好啊，py的属性不同其他语言只能在类中先定义好，它还支持在实例化对象后动态的append属性啊，简直爽炸成，py类中有一个__init__()函数，就像其它语言中的构造器，可以先把属性值一起在实例化的同时初始化
+比如：
+class Person():
+	count = 0    #count how many object
+	def __init__(self, name, sex, birth):    #self必须为the first arguments，可以用别的单词代替，但是standard规定为self
+		self.name = name
+		self.sex = sex
+		self.birth = birth
+		Person.count += 1
+
+Peter = Person('Peter Choi', 'male', r'1995-09-19')
+Peter.age = 20    #动态append property
+
+类中属性的权限：与其其它静态语言不同，没有权限修饰符，而是用特殊的命名规则来表示权限，比如变量名前加‘__’，则表示是private，外部无法直接访问，可以像其它语言那样弄个get/set方法来操作，还有‘__name__’这种特殊的，暂时不懂，回头啃完书再来完善这一块内容
+Update：在187行开始有特殊方法的笔记
+-----------------------------------------------------------------未完待整（已整）-------------------------------------------------------------------------
+
+py中的方法：说白了就是函数，只是oop说的是对象，那么就变成对象的方法
+比如，用get/set设置private属性：
+class Person():
+	def set_name(self, name):
+		self.__name = name
+	
+	def get_name(self):
+		rturn self.__name
+me = Person()
+me.set_name('cohbird')
+print me.get_name()
+------------------------------------------------
+cohbird
+------------------------------------------------
+
+函数与方法的区别：py是动态的，意味着方法也可以动态的整，在模块types中，有一个方法是types.methodType(functionName, objectName, className)，可以把一个函数动态的append到某个类实例化的对象，有且只有该对象有这个动态append的方法，而函数和实例方法的区别在于有无参数self
+比如：
+class Person():
+	def __init__(self, name, sex):
+		self.name = name
+		self.sex = sex
+
+		def set_birth(self, birth):    #this is a method, have self
+			self.__birth = birth
+
+		def get_birth(self, birth):    #this is a method, have self
+			return self.__birth
+
+		self.method = lambda:'define method'    #this is a function, not have self
+
+类方法：class中定义类方法，而不是绑定在实例上的实例方法，区别在于要加一个decorator，就是@classmethod，这个修饰器把方法绑定在类上，变成类方法，类方法区别于视力方法的参数是cls（实例方法是self），调用方式区别于实例方法是className.method()（实例方法是objectName.method()），并且只能获得类的引用无法获得实例的引用（不能调用实例对象的任何实例变量）
+比如：
+class Person(object):
+	__count = 0
+	@classmethod
+	def get_count(cls):
+		return cls.__count
+	
+	def __init__(self, name):
+		self.name = name
+		Person.__count += 1
+	
+print Person.get_count
+o1 = Person('Petter Choi')
+print Person.get_count
+-------------------------------------------------
+0
+1
+-------------------------------------------------
+
+类的继承：py所有类都是从object开始继承的，继承就是那回事，与其他语言相同，继承属性和方法不用再重写，py继承的方法是class className(extendClassName)，而且继承之后要用super继承父类的属性
+比如：
+class Person(object):
+	def __init__(self, name, sex):
+		self.name = name
+		self.sex = sex
+	
+class Student(Person):
+	def __init__(self, name, sex, score):
+		super(Student, self).__init__(name, sex)
+		self.score = score
+
+s1 = Student('Adma', 'Female', 82.0)
+
+print s1.name
+print s1.sex
+print s1.score
+------------------------------------
+Adma
+Female
+82.0
+------------------------------------
+
+多态：与其他对象语言一样，继承的子类，所具有的一些属性和方法可能是不同的，这个是侯就称为多态，即名字相同的属性和方法，值和效果不同
+比如：
+class Person(object):
+	def __init__(self, name, sex):
+		self.name = name
+		self.sex = sex
+	
+	def whoAmI(self):
+		return 'I am a person, my name is %s' % self.name
+
+class Student(Person):
+	def __init__(self, name, sex, score):
+		super(Student, self).__init__(name, sex)
+		self.score = score
+	
+	def whoAmI(self):
+		return 'I am a student, my name is %s' % self.name
+	
+def WhoAmI(x):
+	print x.whoAmI()
+
+p1 = Person('Adma', 'Female')
+s1 = Student('Bob', 'Male', 92.0)
+
+WhoAmI(p1)
+WhoAmI(s1)
+---------------------------------------------
+I am a person, my name is Adma
+I am a student, my name is Bob
+---------------------------------------------
+
+多重继承：一个子类可以继承多个类，别且拥有所继承的所有属性和方法
+比如：
+class A(object):
+	pass
+class B(A):
+	pass
+class C(A):
+	pass
+class D(B, C):
+	pass
+-------------------------------------------------------------
+以上，D继承了B类和C类，而B类和C类又继承了A类，因此D类继承了A，B，C三个类
+-------------------------------------------------------------
+
+对象操作函数getattr和setattr：顾名思义，一个获取对象信息，一个设置对象信息
+比如：
+class Person(object):
+	def __init__(self, name, sex):
+		self.name = name
+		self.sex = sex
+	
+p1 = Person('Adma', 'Female')
+
+print getattr(p1, 'name')    #first arguments is object, next is the property, and it must add the token " '' "
+
+setattr(p1, 'name', 'BoA')    #first arguments is boject, next is the property, the last argumens is the property values
+print p1.name
+-----------------------------------------------------------
+Adma
+BoA
+-----------------------------------------------------------
+
+定义任意额外参数的初始化：需要用**kw，以及字典操作函数iteritems和setattr来绑定键值对应的属性和值
+比如：
+class Person(object):
+	def __init__(self, name, sex, **kw):
+		self.name = name
+		self.sex = sex
+		for key, values in kw.iteritems():
+			setattr(self, key, values)
+
+p1 = Person('BoA', 'Female', age = 20, score = 92.0)
+print 'The age is %d, the score is %.1f' % (p1.age, p1.score)
+-----------------------------------------------------------
+The age is 20, the score is 92.0
+-----------------------------------------------------------
+
+Py特殊方法：定义在类中，供给特别的函数调用，比如print函数，调用的其实是某个对象中的objectName.__str__()方法，len则是调用对象中的objectName.__len__()方法，特殊方法格式为__methodName__()，双下划线开始，双下划线结束
+
+__str__方法：print函数默认调用的就是这个玩意，默认的数据类中都有这么一个__str__()特殊方法，自定义类没有定义时返回的是内存地址
+比如，自定义__str__：
+class Person(object):
+	def __init__(self, name, sex, **kw):
+		self.name = name
+		self.sex = sex
+		for k, v in kw.iteritems():
+			setattr(self, k, v)
+
+	def __str__(self):
+		return 'Class: %s\nName :%s\nSex  :%s' % (Person.__name__, self.name, self.sex)
+	
+p1 = Person('Adma', 'Female')
+print p1
+-----------------------------------------------------------
+Class:Person
+Name :Adma
+Sex  :Female
+-----------------------------------------------------------
+
+__repr__：默认调用对象名时返回的内容由__repr定义，比如在解释器中，定义了i = 10在直接敲个i，default返回的内容就是__rept__定义的return i
+比如,偷懒方式就是把__str__内容赋值给__repr__：
+class Person(object):
+	def __init__(self, name, sex, **kw)：
+		self.name = name
+		self.sex = sex
+		for key, values in kw.iteritems():
+			setattr(self, key, values)
+	
+	def __str__(self):
+		return 'Class: %s\nName :%s\nSex  :%s' % (Person.__name__, self.name, self.sex)
+
+	def __repr__(self):
+		pass
+	
+	__repr__ = __str__
+
+p1 = Person('Adma', 'Female')
+p1
+-----------------------------------------------------------
+Class:Person
+Name :Adma
+Sex  :Female
+-----------------------------------------------------------
+
+__cmp__:默认的排序方法，sorted调用是的的default rule
+比如，按分数从高到低排名，分数相同按名字从a到z排名：
+class Person(object):
+	def __init__(self, name, sex):
+		self.name = name
+		self.sex = sex
+	
+class Student(Person):
+	def __init__(self, name, sex, score):
+		super(Student, self).__init__(name, sex)
+		self.score = score
+	
+	def __cmp__(self_1, self_2):
+		if self_1.score > self_2.score:
+			return -1
+		elif self_1.score == self_2.score:
+			if self_1.name < self_2.name:
+				return -1
+			else:
+				return 0
+		else:
+			return 0
+	
+	def __repr__(self):
+		return '%s: %s, %s' % (self.name, self.sex, self.score)
+
+L = [Student('Adma', 'Female', 99), Student('Boa', 'Male', 88), Student('Peter', 'Male', 99)]
+print sorted(L)
+-----------------------------------------------------------
+['Adma': 'Female', 99), 'Peret': 'Male', 99), 'Boa': 'Male', 88)]
+-----------------------------------------------------------
+
+__len__：len默认调用的方法
+比如，打印规定的斐波那契数，并准确返回数量：
+class Fib(object):
+	def __init__(self, num):
+		a, b, L = 0, 1, []
+		for n in range(num):
+			L.append(a)
+			a, b = b, a + b
+		self.numbers = L
+	
+	def __str__(self):
+		return str(self.numbers)    #here must change it to string type
+
+	__repr__ == __str__
+
+	def __len__(self):
+		return len(self.numbers)
+	
+f = Fib(10)
+print f
+print len(f)
+-----------------------------------------------------------
+0, 1, 1, 2, 3, 5, 8, 13, 21, 34
+10
+-----------------------------------------------------------
+
+class的四则运算符对应操作的特殊方法：加__add__，减__sub__，乘__mul__，除__div__
+比如，有理数类（分数）运算：
+def gcd(a, b):
+	if b == 0:
+		return a
+	return gcd(b, a % b)
+
+class Rational(object):
+	def __init__(self, p, q):
+		self.p = p
+		self.q = q
+	
+	def __add__(self_1, self_2):
+		return Rational(self_1.p * self_2.q + self_2.p * self_1.q, self_1.p * self_2.p)
+	
+	def __sub__(self_1, self_2):
+		return Rational(self_1.p * self_2.q - self_2.p * self_1.q, self_1.p * self_2.p)
+
+	def __mul__(self_1, self_2):
+		return Rational(self_1.p * self_2.p, self_1.q * self_2.q)
+
+	def __div__(self_1, self_2):
+		return Rational(self_1.p * self_2.q, self_1.q * self_2.p)
+		
+	def __str__(self):
+		g = gcd(self.p, self.q)
+		return '%s/%s' % (self.p / g, self.q / g)
+	
+	__repr__ == __str__
+
+r1 = Rational(1, 2)
+r2 = Rational(1, 4) 
+print r1 + r2
+print r1 - r2
+print r1 * r2
+print r1 / r2
+-----------------------------------------------------------
+3/4
+1/4
+1/8
+2/1
+-----------------------------------------------------------
+
+class的强制类型转换：要实现类对象的强制类型转换，需要完善对应的类型方法，__int__, __float__, __str__
+比如：
+def gcd(x1, x2):
+	if x2 == 0:
+		return x1
+	return gcd(x2, x1 % x2)
+
+class Rational(pbject):
+	def __init__(self, p, q):
+		self.p = p
+		self.q = q
+
+	def __int__(self):
+		return self.p / self.q
+	
+	def __float__(self):
+		return float(self.p) / float(self.q)
+
+	def __str__(self):
+		g = gcd(self.p, self.q)
+		return '%s/%s' (self.p / g, self.q / g)
+
+r = Rational(4, 6)
+print int(r)
+print float(r)
+print str(r)    # it <==> print r, because __str__ is print default method
+-----------------------------------------------------------
+0
+0.666666666666
+2/3
+-----------------------------------------------------------
+
+属性化装饰器@property：可以通过@property装饰器把一个方法给属性化，也就是调用时不需要括号(object.method()与object.method的区别)，配合@objectPropertyName.setattr修饰器，可以直接做到get/set的效果
+ps：主要是给provate的property加上，使之可以直接访问而不用通过调用特定的get_method来访问它
+比如：
+class Student(object):
+	def __init__(self, name, score):
+		self.name = name
+		self.__score = score
+	
+	#把score变成属性，调用时不需要加表示为方法或者函数的括号
+	@property
+	def score(self):
+		return self.__score
+
+	#把score.serattr直接变成熟悉score，意味着可以直接赋值，比如objectName.score = xxx，如果没有set方法，则意味着初始化后值不可变只能get，也就是only-read
+	@score.setattr
+	def score(self, score):
+		if score < 0 or score > 100:
+			raise ValueError('invalid score')    #当score不在range内时，抛出异常，提示score无效
+		self.__score = score
+
+	@property
+	def grade(self):
+		if self.__score >= 80:
+			return 'A'
+		if self.__score < 60:
+			return 'C'
+		else:
+			return 'B'
+	
+m1 = Student('BoA', 99)
+print m1.grade
+m1.score = 60
+print m1.grade
+m1.score = 59
+print m1.grade
+-----------------------------------------------------------
+A
+B
+C
+-----------------------------------------------------------
+
+__slots__特殊方法：py是动态语言，意味着实例化的对象可以自由无限的添加属性，如果定义了__slots__方法，则可以限制实例只可以动态添加的属性，这些可添加的属性为__slots__中规定允许的属性列表中的属性，并且有继承关系
+ps:__slots__是个类tuple type，也就用“ ('') ”包含它的列表成员
+比如：
+class Person(object):
+	__slots__ = ('name', 'sex')
+
+	def __init__(self, name, sex):
+		self.name = name
+		self.sex = sex
+	
+class Student(Person):
+	__slots__ = ('score')
+	
+	def __init__(self, name, sex, score):
+		super(Student, self).__init__(name, sex)
+		self.score = score
+
+s = Student('BoA', 'Female', 82)
+
+
+__call__特殊方法：在py中，函数就是一个可调用对象，比如f = abs，这是f也具有abs本身的函数体，但是本质上f是个变量名，就是个对象，但是它又可以调用来执行某些特定操作，因此解释函数为可调用对象，而类中这个__call__特殊方法定义后，就可以把实例对象变成一个可调用对象，我的理解其实说成变成一个函数也说的通，可有参可无参，执行函数体内的代码嘛
+比如：
+class Person(object):
+	def __init__(self, name):
+		self.name = name
+	
+	def __call__(self, name):
+		print 'My name is %s' % (self.name)
+		print 'I call my friend %s' % (name)
+	
+p = Person('BoA')
+p('Tom')
+-----------------------------------------------------------
+My name is BoA
+I call my friend Tom
+-----------------------------------------------------------
+
+That's all.

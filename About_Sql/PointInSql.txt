@@ -1,0 +1,141 @@
+0x01 SQL是一种声明式语言
+1、是声明式语言，它不是编程语言，它的语言不是逻辑性的告诉计算机如何工作，它的目的中心围绕的是query，是查询，这不需要逻辑，只需要查询的范式，也就是查的范例，查的是什么
+
+0x02 SQL的语法并不按照语法顺序执行
+比如：
+SELECT
+FROM
+WHERE
+GROUP BY
+HAVING
+UNION
+ORDER BY
+这是一条SQL语句的正常语法顺序，然而执行起来的顺序其实是这样的：
+FROM 
+WHERE
+GROUP BY
+HAVING SELECT
+DISTINCT
+UNION
+ORDER BY
+结论：
+1、FROM才是SQL语句执行的第一步，并不是SELECT，数据库执行SQL语句的第一步是将数据从硬盘加载到数据缓冲区，以便对这些数据进行操作
+
+2、SELECT是在大部分语句执行后才执行的，严格说是在FROM和GROUP BY之后执行的，这也是为什么不能在WHERE中使用在SELECT中设定别名的字段作为判断条件的原因
+比如：
+SELECT A.x + A.y AS Z
+FROM A
+WHERE Z = 10
+-----------------------------------------------------------
+Z不可用，因为SELECT在WHERE之后执行，执行WHERE的时候并没有Z供WHERE判断
+正确的方法是，把Z再写一遍，也就是WHERE (A.x + A.y) = 10
+-----------------------------------------------------------
+
+3、无论在语法还是执行顺序上，UNION总是排在ORDER BY之前
+
+0x03 SQL语言的核心是对表的引用（table references）
+1、从集合论（关系代数）的角度来看，一张table就是一组数据元的关系，而每个SQL语句会改变一种或数种关系，从而产生出新的数据元的关系，也就是产生新的表，因此SQL的核心是对表的引用
+
+0x04 灵活引用表能使SQL语句变得更强大
+1、思考问题从表引用的角度出发，这样容易理解数据是怎样被SQL语句处理的
+
+2、JOIN是构建连接表的关键词，并不是SELECT语句的一部分
+ps：有一些数据库运行在INSERT、UPDATE、DELETE中使用JOIN
+
+0x05 SQL语句中推荐使用表连接
+1、用JOIN链接的表离得非常近，这样能避免错误，安全
+
+2、JOIN语句能区分出来外连接和内连接等
+结论：尽量使用JOIN进行表的连接，永远不要在FROM后面使用逗号连接表
+
+0x06 SQL语句中不同的连接操作（SQL语句中，表连接的方式从根本上分为五种）
+1、EQUI JOIN：最普通的JOIN操作，包含两种连接方式
+比如：
+INNER JOIN（or JOIN）
+OUTER JOIN（include： LEFT、RIGHT、FULLOUTER JOIN）
+-----------------------------------------------------------
+一为内连接
+二为外连接
+-----------------------------------------------------------
+
+2、SEMI JOIN：这种连接方式配合IN或者EXISTS，连接目标表指定的那一部分
+比如：
+FROM author
+WHERE author.id IN (SELECT book.author_id = author.id)
+
+FROM author
+WHERE EXISTS (SELECT 1 FROM book WHERE book.author_id = author.id)
+-----------------------------------------------------------
+两种语句的性能没有差异，但对于性能则可能会非常大，IN的可读性更好，EXSITS的表达性更好，适合复杂语句
+
+3、ANTI JOIN：这种连接的关系跟SEMI JOIN刚好相反，在IN和EXISTS前加个NOT就能实现这种连接方法
+比如：
+FROM author
+WHERE author.id NOT IN (SELECT book.author_id FROM book)
+FROM author
+WHERE NOT EXISTS (SELECT 1 FROM book WHERE book.author_id = author.id)
+-----------------------------------------------------------
+结论同SEMI JOIN
+	
+4、CROSS JOIN：这种连接过程就是两个连接的表的乘积，也就是将第一张表的每条数据分别对应第二张表的每条数据，这也是逗号在FROM语句中的用法
+比如：
+author CROSS JOIN book
+
+5、DIVISION：DIVISION是JOIN的逆过程（这里的作者的意思是新手没法解释……）
+-----------------------------------------------------------
+------------------------------占坑-------------------------
+-----------------------------------------------------------
+
+0x07 SQL中如同变量的派生表
+1、SQL是声明语言，因此不能include var，但是你能写出类似var的语句，这就叫做派生表，其本质就是在括号之中的子查询
+比如：
+FROM (SELECT * FROM author)
+-----------------------------------------------------------
+
+2、为派生表定义一个相关名（别名）
+比如：
+FROM (SELECT * FROM author) a
+-----------------------------------------------------------
+
+3、派生表可以有效的避免由于SQL逻辑而产生的问题
+比如，重用一个用SELECT和WHERE语句查询出的结果（Orale）为例：
+SELECT first_name, last_name, age
+FROM (
+	SELECT first_name, last_name, current_date - date_of_birth age
+	FROM author
+)
+WHERE age > 10000
+-----------------------------------------------------------
+
+4、在有些数据库以及SQL1990标准中，派生表被归为下一级——通用表语句，意味着允许你在一个SELECT语句中对派生表多次重用
+比如，上面的例子可以写成这样：
+WITH a AS (
+	SELECT first_name, last_name, current_date - date_of_birth age
+	FROM author
+)
+SELECT *
+FROM a
+WHERE age > 10000
+
+0x08 SQL语句中GROUP BY是对表的引用进行的操作
+ps:看也看不懂，就是强调GROUP BY是对表的引用进行操作……
+
+0x09 SQL语句中的SELECT实质上是对关系的映射
+通过SELECT语句，能对没一个字段进行操作，在通过复杂的表达式生成所需要的数据
+必须熟悉的有：
+1、仅能够使用那些能通过表引用而的来的字段
+2、如果你有GROUP BY语句，你只能够使用GROUP BY语句后面的字段或者聚合函数
+3、当语句中没有GROUP BY时，可以使用开窗函数代替聚合函数
+4、当语句中没有GROUP BY时，不能同时使用聚合函数和其它函数
+5、有一些方法可以将不同函数封装在聚合函数中
+
+0x10 集合运算和排序运算
+1、集合运算：主要操作在集合上，实际上指的就是对表的一种操作
+DISTINCT 在映射后对数据去重
+UNION 将两个子查询拼接起来并去重
+UNION ALL 将两个子查询拼接起来不去重
+EXCEPT 将第二个子查询中的结果从地一个子查询中去掉
+INTERSECT 保留两个子查询中都有额结果并去重
+2、排序运算：排序运算跟逻辑无关，这是一个SQL特有的功能，不同的数据库有不同的表达方式
+
+That's all.

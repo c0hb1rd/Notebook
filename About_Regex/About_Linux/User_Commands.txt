@@ -1,0 +1,81 @@
+0x00 概述
+	1、用户：使用操作系统的人 
+
+	2、用户组：具有相同系统权限（管理员权限，普通用户权限，来宾用户权限等）的一组用户
+
+	3、配置文件
+		（1）/etc/group，存储当前系统中所有用户组信息
+			用”：“号分隔的四个信息分别为，组名称：组密码占位符：组编号：组中用户名列表，linux中root组号一定为0，组号1-499为系统预留编号，给软件和服务使用的，组号500以上为用户手动创建的用户组编号
+		（2）/etc/gshadow，存储当前系统中用户组的密码信息
+			用”：“号分隔的四个信息分别为，组名称：组密码：组管理员：组中用户列表
+		（3）/etc/passwd，存储当前系统中所有用户的信息
+			用”：“号分隔的七个信息分别为，用户名：密码占位符：用户编号：用户组编号：用户注释信息：用户主目录：shell类型
+		（4）/etc/shadow，存储当前系统所有用户的密码信息
+			用”：“号分隔的七个信息分别为，用户名：密码（单向加密过）：：：：：
+
+0x01 用户组命令
+	1、新增用户组
+		命令格式：groupadd [options] [name]
+		options：
+			（1）-g：创建用户组并指定编号，group -g [number] [name] 
+		备注：新建一个已[name]为名的用户组
+	2、修改用户组
+		命令格式：groupmod [options] [group]
+		options：
+			（1）-n：修改用户组组名，groupmod -n [group_old_name] [group_new_name]
+			（2）-g：修改用户组编号，groupmod -g [number] [group]
+			（3）-p：修改用户组组密码
+	3、删除用户组
+		命令格式：groupdel [name]
+		备注：必须先删除用户再删除用户组，不然原用户的配置文件中关于用户组的信息就无法匹配，会受到权限上的一些影响
+
+0x02 用户命令
+    1、新建用户
+        命令格式：useradd [options] [username]
+        options：
+            （1）-g：指定用户组，比如“useradd -g [group_name] [username]”（默认创建一个与新建用户名相同的用户组作为新建账户的用户组）
+            （2）-d：指定用户个人文件夹（默认在“/home”下创建与用户名相同的文件夹作为个人文件夹）
+            （3）-G：指定附属组，多个附属组用“，”号隔开
+    
+    2、修改用户
+        命令格式：usermod [options] [username]
+        options：
+            （1）-c：为用户添加备注，比如“usermod -c [string] [username]”
+            （2）-l：修改用户名，比如“usermod -l [new_name] [old_name]”
+            （3）-d：修改用户个人文件夹，比如“usermod -d [path] [username]”
+            （4）-g：修改所属用户组，比如“usermod -g [group_name] [username]”
+            （5）
+
+    3、删除用户组
+        命令格式：userdel [options] [username]
+        options：
+            （1）-r：连同个人文件一起删除
+
+    4、密码操作
+        命令格式：passwd [options] [username]
+        options：
+            （1）-d：删除用户密码
+            （2）-l：lock用户
+            （3）-u：unlock用户
+            （4）-k：修改用户密码
+            （5）-S：查看密码状态
+
+    5、附属用户组操作
+        命令格式：gpasswd [options] [group_name] [username]
+        options：
+            （1）-a：添加用户组用户
+            （2）-d：删除用户组用户
+            （3）-r：删除用户组密码
+        备注：直接用gpasswd [username]，可以为用户组创建密码
+
+    6、多组用户切换用户组
+        命令格式：newgrp [group_name]
+
+0x03 用户相关命令
+    1、whoami，显示当前用户（侮辱用户智商系列......）
+    2、id [username]，显示指定用户信息
+    3、groups [username]，显示用户所在的所有组
+    4、chfn [username]，设置用户资料，依次输入用户资料
+    5、finger [username]，显示用户详细资料
+
+That's all.

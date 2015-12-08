@@ -1,0 +1,231 @@
+0x00 常用一级目录
+	/：根目录
+	bin：普通用户可用命令保存目录，自己写的工具直接丢这里面就可以实现gobal权限
+	sbin：超级用户可用命令目录
+	usr：系统软件资源目录
+		usr/bin：同bin
+		usr/sbin：同sbin
+	boot：引导目录
+	dev：设备文件目录
+	etc：配置文件目录
+	home：普通用户的家目录
+	root：超级用户的家目录
+	lib：系统库目录
+	mnt：系统挂载目录（无挂载为空）
+	media：媒体挂载目录（无挂载为空）
+	tmp：临时文件目录
+	sys：系统相关，内容直接写入内存
+	proc：处理器目录，内容直接写入内存
+	var：系统相关文档目录
+0x01 文件和目录处理命令
+	1、查询目录中内容，ls（list）：
+		命令格式：ls [options] [file or directory]
+		options：
+			(1)-a：display all files，include 隐藏 files
+			(2)-l：display detail informations 
+			(3)-d：dispaly 目录信息
+			(4)-h：人性化显示files size
+			(5)-i：inode，显示ID号
+		备注：对于-rw-r--r--等类似权限的解释，首先这玩意有10位，第1位单独为1组，其后每三位为1组，第1组表示文件类型，一共有七种，记住常见的就ok，'-'指文件，'d'指目录，'l'指link，可以理解为快捷方式，第2组是所有者user的权限，第3组是用户组group的权限，比如同样是管理员活在标准用户的权限，第四组则是访客other权限，每组有三位，分别是权限'r'可读、'w'可写、'x'可执行，可用chmod（change mode）指令修改	
+	2、创建目录，mkdir（make directory）：
+		命令格式：mkdir [options] [directory]
+		options：
+			(1)-p：递归创建，创建多级目录时要加'-p'参数，比如，mkdir china/beijing
+	3、切换目录，cd（change directory）：
+		命令格式：cd [path | symbol]
+		symbol：
+			(1)~：用户源目录
+			(2)-：上次访问的目录
+			(3).：当前目录
+			(4)..：上级目录
+	4、查询当前目录位置，pwd（print working directory）：
+		命令格式：pwd
+	5、删除空目录，rmdir（remove empty directory）：
+		命令格式：rmdir
+	6、删除目录或文件：rm（remove）：
+		命令格式：rm [options] [file | directory]
+		options：
+			(1)-r：删除对象为目录
+			(2)-f：忽略提示强制删除
+			(3)-i：删除前询问
+	7、复制命令，cp（copy）：
+		命令格式：cp [options] [file | directory] [path]
+		opyions：
+			(1)-r：复制目录
+			(2)-p：保留文件属性复制
+			(3)-d：若源文件是链接文件，则复制链接属性
+			(4)-a：相当于 -pdr
+	8、重命名与移动，mv（move）：
+		命令格式：mv [file | directory] [new_name | path]
+	9、链接命令，ln（link）：
+		命令格式：ln [options] [source_file] [target_file]
+		options：
+			(1)-s：创建软（soft）链接，不加-s则为硬链接，链接文件最好上绝对路径
+
+		备注：硬链接指拥有相同的inode_ID和存储block数据块（分区），可以看做是同一个文件，可以通过inode识别，不能跨分区，不能针对目录使用，也就是你对硬链接的文件做修改，链接的所有文件都会被修改，但是删除其中之一，其它硬链接的文件不会被删除，本质上引用的是同一个内存空间，因为inode相同，可以理解为指针；软链接则是一个类似windows快捷方式的一种链接方式，拥有自己的inode和block数据块，但是数据块中只保存原文件的file_name和innode_ID，没有实际的文件数据，删除原文件将会导致软链接不可用（同windows的道理），可以理解为指向指针的指针，修改软链接文件实际上是修改原文件的数据，因为它指向的是源文件的inode和block嘛，是对源文件那块内存的数据进行操作
+
+0x02 搜索命令
+	1、文件名搜索命令，locate：
+		命令格式：locate [file_name]
+		备注：这是一种在后台数据库（/var/lib/mlocate | /var/lib/slocate | /var/lib/locatedb，不同的linux有不同库名）中按文件名搜索的搜索方式，搜索速度快，但是它只能找到后台数据库里面有记录的文件，它的更新频率默认是一天一次，也可以用指令‘updatedb’手动更新，这时候系统就把文件记录更新到后台数据库中，而它的搜索规则是根据/etc/updatedb.conf文件的配置来搜索，配置文件中PRUNEFS参数为忽略的文件系统，PRUNENANES参数为忽略的文件类型，PRUNEPATHS参数为忽略的路径
+	2、命令名搜索命令，whereis：
+		命令格式：whereis [options] [command_name]
+		options:
+			(1)-b：只查命令所在路径
+			(2)-m：只查找帮助文档
+		备注：默认查找命令的所在路径及帮助文档所在位置
+	3、命令搜索命令，which：
+		命令格式：which [command_name]
+		备注：可以查看到命令的位置和命令的别名
+	4、文件搜索命令，find：
+		命令格式：find [path] [condition]
+		path：可以有多个路径，用空格区分
+		condition（搜索条件）：
+			(1)-name file_name：这个搜索条件搜索文件名为file_name文件
+			(2)-iname file_name：同name，但不区分文件名大小写搜索
+			(3)-user user_name：按所有者搜索
+			(4)-nouser：查找没有所有者的文件
+			(5)-[time_type] [parameter]：
+				time_type：
+					[1]atime：文件访问时间
+					[2]ctime：改变文件属性
+					[3]mtime：修改文件内容
+				parameter：
+					[1]+N：N天前影响的文件
+					[2]N：N天当天影响的文件
+					[3]-N：N天内影响的文件
+			(6)-size [size]：根据文件大小搜索，[size]规则同xtime的参数规则
+			(7)-inum [inode_ID]：按文件节点搜索
+			(8)-exec [command] {}\;：对find的查询结果交给command指令去执行，后面必须有{}\;，类格式转换符和命令结束符，比如find [path] [condition] -exec rm -rf {}\;，删除find返回的结果
+		备注：在不确定file_name的情况下可以用通配符模糊搜索，类正则但不是正则（‘*’代表任意字符，‘？’代表一个字符，‘[]’任意一个中括号内的字符），condition是可以多个的，用逻辑表示符-a（逻辑and）和-o（逻辑或）
+	5、字符串搜索命令，grep：
+		命令格式：grep [options] [string] [file_name]
+		options：
+			(1)-i：忽略大小写
+			(2)-v：排除指定字符串
+		备注：一般配合‘|’管道来使用，对返回的结果进行匹配搜索，默认是返回文件中与指定字符串匹配的行，可以使用正则表达式
+	
+0x03 帮助命令
+	1、查看命令帮助文档，man（manual page）：
+		命令格式：man [options | level] [command]
+		options：
+			(1)-f：查看命令拥的帮助文档，等价于whatis [command]，类似whereis -m [command]
+			(2)-k：模糊搜索，查看包含命令字符串的所有帮助文档，等价于apropos [command]
+		level：
+			(1)N：N表示等级级别，指定查看命令的N级帮助文档
+		帮助文档级别有9级：
+			(1)查看命令的帮助
+			(2)查看可被内核调用的函数的帮助
+			(3)查看函数和函数库的帮助
+			(4)查看特殊文件的帮助
+			(5)查看配置文件的帮助
+			(6)查看游戏的帮助
+			(7)查看其它杂项的帮助
+			(8)查看系统管理员可用命令的帮助
+			(9)查看和内核相关文件的帮助
+	2、命令的自带帮助参数，--help：
+		命令格式：[command] --help
+	3、shell内部帮助文档，help：
+		命令格式：help [command] 
+		备注：help只能获取shell内部自带命令的帮助文档，比如cd，而ls这种外来工具则没有对应的文档返回，可以通过whereis [command]判断是否为内部命令，能查到位置则是外部命令
+	4、详细命令帮助文档，info（information）：
+		命令格式：info [command]
+		进入文档后的操作：
+			(0)*：遇到‘*’号开头的，可以用回车进入查看内容
+			(1)u：进入上层页面
+			(2)n：进入下一个帮助小节
+			(3)p：进入上一个帮助小姐
+			(4)q：退出
+
+0x04 压缩命令
+	概述：linux常见压缩格式有‘.zip’、‘.gz’、‘.bz2’、‘.tar.gz’和‘.tar.bz2’
+	1、.zip格式压缩，zip：
+		命令格式：zip [options] [final_zip_filename] [source_file | source_directory]
+		options：
+			(1)-r：压缩源为目录
+	2、.zip格式解压，unzip：
+		命令格式：unzip [zip_file]
+	3、.gz格式压缩，gzip：
+		命令格式：gzip [options] [source_file | source_directory]
+		options：
+			(1)-c：打印压缩结果
+			(2)-r：压缩源为目录，但不同于zip压缩，不是压缩目录，而是压缩目录下所有的子文件
+			(3)-d：解压缩gzip文件
+		备注：gzip压缩会使源文件消失，若想保留源文件，可以使用-c参数配合重定向实现保留源文件的压缩方式，格式为“gzip -c [source_file | source_directory] > [final_gz_filename]”
+	4、.gz格式解压，gunzip：
+		命令格式：gunzip [options] [gz_file | directory]
+		options：
+			(1)-r：解压目录下的gzip文件
+	5、.bz2格式压缩，bzip2：
+		命令格式：bzip2 [options] [source_file]
+		options：
+			(1)-k：保留源文件压缩
+			(2)-d：解压文件
+		备注：bzip压缩的文件后缀为'.bz2'，且bzip2不能压缩目录，-d的解压会让源压缩包消失，可与加-k保留源压缩包
+	6、.bz2格式解压，bunzip2：
+		命令格式：bunzip2 [options] [bz2_file]
+		options：
+			(1)-k：保留压缩包解压
+	7、打包与解压缩命令，tar：
+		命令格式：tar [options] [package] [source_file |source_directory]
+		options：
+			(0)-t：查看包的内容
+			(1)-c：打包
+			(2)-v：显示过程
+			(3)-f：指定打包后的文件名
+			(4)-x：拆包
+			(5)-zcvf：打包并压缩为.tar.gz格式文件，命令格式为“tar -zcvf [tar.gz_filename] [source]”
+			(6)-zxvf：解压并拆包.tar.gz格式文件，命令格式为“tar -zxvf [tar.gz_file]”
+			(7)-jcvf：打包并压缩为.tar.bz2格式文件，命令格式为“tar -jcvf [tar.bz2_filename] [source]”
+			(8)-jxvf：解压并拆包.tar.bz2格式文件，命令格式为“tar -jxvf [tar.bz2_file]”
+			(9)-C：指定解压位置，-C参数位置要在解压源文件之后，比如"tar -zxvf [tar.gz_file] -C [path]"
+		备注：打包和拆包通常是‘-cvf’和’-xvf‘合起来一起用，比如"tar -cvf [package] [source_file | source_directory]"，[tar.gz_filename]可以加绝对路径来指定压缩后的位置，且可以同时指定多个压缩文件，文件之间用“空白符”隔开
+
+0x05 用户交互命令
+	1、查看用户信息，w：
+		命令格式：w [username]
+		命令输出信息：
+			(1)USER：登陆用户名
+			(2)TTY：登陆终端，tty为本机终端，pts为远程终端，图形界面的terminial归类为pts
+			(3)FROM：登陆IP
+			(4)LOGIN@：登陆时间
+			(5)IDLE：用户闲置时间
+			(6)JCPU：与该终端链接的所有进程占用时间，不包括过去后台作业时间，但包含当前后台作业时间
+			(7)PCPU：当前进程占用时间
+			(8)WHAT：当前正在运行的命令
+	2、查看登陆用户信息，who：
+		命令格式：who [username]
+		备注：命令输出信息只有用户名、登陆终端和登陆时间(IP地址)
+	3、查看当前登陆和过去登陆的用户信息，last：
+		命令格式：last
+		命令输出信息：用户名，登陆终端，登陆IP，登陆时间，退出时间(在线时间)
+		备注：last命令默认是读取"/var/log/wtmp"文件数据
+	4、查看所有用户的最后一次登陆时间，lastlog：
+		命令格式：lastlog
+		命令输出：用户名，登陆终端，登陆IP，最后一次登陆时间
+		备注：lastlog命令默认是读取"/var/log/lastlog"文件数据
+
+0x06 其它常用命令
+	1、关机与重启，shutdown：
+		命令格式：shutdown [options] [time]
+		options：
+			(1)-h：关机
+			(2)-r：重启
+			(3)-c：取消shutdown任务
+		time：
+			(1)N：默认为N分钟后生效
+			(2)now：即时生效
+		备注：重启也可以用reboot，关机不要用half，不安全，不会终止进程释放内存，注销用logout命令
+	2、启动级别命令，init：
+		命令格式：init [level]
+		level：
+			(1)0：关机
+			(2)1：单用户模式，一般为修复错误情况下使用，类win的safe mode
+			(3)2：不完全多用户，不含NFS（network file system）服务
+			(4)3：完全多用户，也就是标准字符界面
+			(5)4：未分配
+			(6)5：图形界面
+			(7)6：重启
+		备注：可以修改对应版本的启动等级配置文件来修改默认等级，用runlevel查看当前启动等级
+
+That's all.

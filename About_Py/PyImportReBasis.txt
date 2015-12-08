@@ -1,0 +1,55 @@
+正则常用符号与方法（完整的符号和方法用help(re)查看）
+常用符号：
+^：start of string
+$：end of string
+.：匹配任意字符，'\n'除外    #default '.'只能匹配一行中的content，加上re.S就可以匹配多行内容，也就是可以接受'\n'
+*：匹配前一个字符0次或unlimit次
+?：匹配前一个字符0次或1次
+.*：贪心算法
+.*?：非贪心算法
+()：括号内的数据作为结果返回
+\d+：匹配纯数字，如果字符串中的数字有间隔成多组，用findall则每组当作一个成员返回
+
+常用方法：
+findall：匹配所有符合规律的content，reutrn result list，成员为tuple，访问可以成员中某个元素可以L = [rows][columns]
+search：匹配并提取地一个符合规律的content，返回一个正则表达式object，与group联用可以return一个string
+sub：替换符合规律的content，然后用特定的values替换掉这些内容，返回所有文本（如果用'^.*?$'的话，则可以把一行字符串完全替换）
+
+比如：
+import re
+
+source_code = 'shgdxxIxxhsfidxxLovexxsfhidfxxYouxxfdfn'
+
+fl_result_1 = re.findall('xx(.*?)xx', source_code)
+fl_result_2 = re.findall('xx(.*?)xxhsfidxx(.*?)xxsfhidfxx(.*?)xx', source_code)
+print fl_result_1
+for rows in range(1):
+	for columns in range(3):
+		print fl_result_2[rows][columns]
+
+sh_result_1 = re.search('xx(.*?)xxhsfidxx(.*?)xxsfhidfxx(.*?)xx', source_code).group(1)
+sh_result_2 = re.search('xx(.*?)xxhsfidxx(.*?)xxsfhidfxx(.*?)xx', source_code).group(2)
+sh_result_3 = re.search('xx(.*?)xxhsfidxx(.*?)xxsfhidfxx(.*?)xx', source_code).group(3)
+print sh_result_1
+print sh_result_2
+print sh_result_3
+
+sb_result = re.sub('^(.*?)$', '%s' % 'This is a test', source_code)
+print sb_result
+
+source_code_2 = 'xsd123fdf456fdg789asddf'
+fl_result_s2 = findall(r'(\d+)', source_code_2)
+print fl_result_s2
+-----------------------------------------------------------
+['I', 'Love', 'You']
+I
+Love
+You
+I
+Love
+You
+This is a test
+['123', '456', '789']
+-----------------------------------------------------------
+
+That's all.
