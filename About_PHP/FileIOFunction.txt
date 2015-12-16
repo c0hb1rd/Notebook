@@ -1,0 +1,19 @@
+resource fopen(String path, String mode)                : 打开一个文件流
+fclose(resource fp)                                     : 闭一个文件流
+fwrite(resource fp, String content)                     : 向fp写入数据content
+char fgetc(resource fp)                                 : 向fp中读取一个字符
+String fgets(resource fp, int length)                   : 向fp中读取一行长度最大为length的字符串
+String fgetss(resouce fp, int length, String allow_tags): 向fp中读取一行长度最大为length的字符串，并过滤allow_tags中的字符
+array fgetcsv(resource fp, int length, String delimited): 向fp中读取一行长度最大为length的字符串，以delimited为分隔符分成数组元素
+readfile(String path)                                   : 读取path中的所有数据并回显
+fpassthru(resource fp)                                  : 读取fp中的所有数据并回显
+array file(resource fp)                                 : 读取fp中的所有数据，并将每一行分成数组元素
+String file_get_content(resource fp)                    : 读取fp中的所有数据并返回为字符串
+String fread(resource fo, int length)                   : 从fp中读取指定长度的字节数
+bool file_exists(String path)                           : 如果path存在，为真，反之为假
+int filesize(String path)                               : 返回path字节大小
+unlink(String path)                                     : 移除path
+rewind(resource fp)                                     : 使fp指针回到最开始，也就是0字节位
+int ftell(resource fp)                                  : 返回fp当前的指针位置，按字节计算
+fseek(resource fp, int position[, int whence])          : 从whence位置开始移动postion为字节，默认whernce为SEEK_SET，也就是0字节位，其他参数为 SEEK_CUR 与 SEEK_END，分别表示当前位和末位
+bool flock(resource fp, int operation)                  : 文件锁定，operation参数为 LOCK_SH，LOCK_EX，LOCK_UN与LOCK_NB，分别表示锁读，锁写，释放与防止线程阻塞
