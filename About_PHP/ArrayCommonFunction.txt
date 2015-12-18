@@ -1,0 +1,31 @@
+1、排序：
+sort(array ary[, string mode]) 							: 升序排序一个数组，第二个参数默认为SORT_REGULAR，可选参数为SORT_NUMERIC和SORT_STRING，以数字或者字符来比较
+asort(array ary) 										: 以数组的key升序排序一个数组
+ksort(array ary) 										: 以数组的value升序排序一个数组
+rsort(array ary[, string mode]) 						: 降序排序一个数组
+arsort(array ary)										: 以数组的key降序排序一个数组
+krasort(array ary)										: 以数组的value降序排序一个数组
+array_reverse(array ary) 								: 反向排序数组
+shuffle(array ary) 										: 随机排序数组
+usort(array ary, string compareFunctionName) 			: 自定义排序，String 参数为用来比较函数的函数名，需要加"$"，比如'$caompare'，比较函数与其它编程语言是类似的，传两参数，分别为数组的两个相邻元素，比较之，return 1则两元素互换位置，0，-1则不变，一般0做相等时的返回值
+
+2、操作
+array_push(array ary, type var) 						: 在数组最后插入一个新的元素var
+array_pop(array ary) 									: 移除数组最后一个元素
+type each(array ary) 									: 返回数组指针当前指向的元素，并将指针移至下一位
+type current(array ary) 								: 返回数组指针当前指向的元素
+type current(array ary) 								: 同current，返回数组指针当前指向的元素
+reset(array ary) 										: 重置数组指针到起始位置
+end(array ary) 											: 将数组指针移动到未位置
+type next(array ary) 									: 将数组指针移至下一位，并返回所指元素
+type prev(array ary) 									: 将数组指针移至上一位，并返回所指元素
+array_walk(array ary string functionName[, type var])  	: 将数组每一元素都给function调用，funcition可以有三个参数，第一个为value，第二个为key，第三个为额外参数，对应array_walk的第三个可选参数，只有一个参数时接收value，要使用额外参数时function必须提供三个参数
+
+3、计数
+int count(array ary) 									: 返回数组的元素个数
+int sizeof(array ary) 									: 同count，返回数组的元素个数
+array array_count_values(array ary) 					: 返回关联型数组，key为原数组元素，value为对应key在原数组中出现的个数
+
+4、神器
+extract(array ary)
+
