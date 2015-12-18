@@ -29,12 +29,11 @@ array array_count_values(array ary) 			: 返回关联型数组，key为原数组
 4、神器
 extract(array ary[, int extract_type][, string prefix]) : 将数组中的键值对生成变量，key为变量名，value为对应变量值
     参数二的值为：
-	EXTR_OVERWRITE 					: 
-	EXTR_SKIP 					: 
-	EXTR_PREFIX_SAME 				: 
-	EXTR_PREFIX_ALL 				: 
-	EXTR_PREFIX_INVALID 				: 
-	EXTR_IF_EXISTS 					: 
-	EXTR_PREFIX_IF_EXISTS 				: 
-	EXTR_REFS 					: 
-
+	EXTR_OVERWRITE 					: 当发生冲突时，覆盖已有变量 
+	EXTR_SKIP 					: 当发生冲突时，跳过已有变量
+	EXTR_PREFIX_SAME 				: 当发生冲突时。创建一个名为prefix_key的变量（prefix为第三个参数，下同）
+	EXTR_PREFIX_ALL 				: 在所有创建的变量名前加prefix
+	EXTR_PREFIX_INVALID 				: 当变量名无效时，比如为数字时，加上prefix
+	EXTR_IF_EXISTS 					: 只提取已存在的变量，用数组的值覆盖
+	EXTR_PREFIX_IF_EXISTS 				: 只有在不带前缀的变量已存在的情况下，创建带有前缀
+	EXTR_REFS 					: 以引用方式提取变量
