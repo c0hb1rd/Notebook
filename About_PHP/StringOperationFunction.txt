@@ -9,8 +9,13 @@ vprintf(string str, array ary）                          : 类似printf，但�
 string vsprintf(string str, array ary）                  : 类似sprintf，但是参数为数组
 string addslashes(string str)                            : 转易字符串中需要转义的字符并返回
 string stripslashes(string str)                          : 除去字符串中的转义字符并返回
+string strtoupper(string str)                            : 将字符串转化为大写
+string strtolower(string str)                            : 将字符串转化为小写
+
+2、分隔切片
 array explode(string separator, string str[, int limit]) : 用separator分割字符串str，为一块为数组元素，limit参数限定分块数量
 string implode(string separator, array ary)              : 用separator为分隔符合并数组为字符串
 string join(string separator, array ary)                 : 同implode
-string strtoupper(string str)                            : 将字符串转化为大写
-string strtolower(string str)                            : 将字符串转化为小写
+string strtok(string str, string separator)              : 类似explode，但是每次只返回一个分隔后的字符串块，strtok的指针会记住上次所分隔后的位置，所以第二次调用时不需要两个参数，直接strtok(string separator)即可，会在剩下的字符串中用新的separator继续分隔
+string substr(string str, int start[, int end])          : 返回指定索引的字符序列，类python，可用负数，效果同python为重末尾开始计算
+
