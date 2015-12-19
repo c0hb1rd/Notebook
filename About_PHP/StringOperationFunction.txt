@@ -1,2 +1,6 @@
 1、格式化
-
+chop(string str)                                : 清除字符串头部的空格与尾部的空格
+ltrim(string str)                               : 清除字符串头部的空格
+rtrim(string str)                               : 清除字符串尾部的空格
+nl2br(string str)                               : 用html的<br />替换字符串中的换行符
+string printf(string $str[, args...])           : 格式化输出字符串，同C的printf函数 
