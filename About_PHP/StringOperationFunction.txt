@@ -5,4 +5,6 @@ rtrim(string str)                                       : 清除字符串尾部�
 nl2br(string str)                                       : 用html的<br />替换字符串中的换行符
 printf(string str[, args...])                           : 格式化输出字符串，类似C的printf函数 
 string sprintf(string str[, args...])                   : 格式化字符串并返回，类似C的sprintf函数
+vprintf(string str, array ary）                         : 类似printf，但是参数为数组
+string vsprintf(string str, array ary）                 : 类似sprintf，但是参数为数组
 
