@@ -1,16 +1,16 @@
 1、格式化
-chop(string str)                                        : 清除字符串头部的空格与尾部的空格
-ltrim(string str)                                       : 清除字符串头部的空格
-rtrim(string str)                                       : 清除字符串尾部的空格
-nl2br(string str)                                       : 用html的<br />替换字符串中的换行符
-printf(string str[, args...])                           : 格式化输出字符串，类似C的printf函数 
-string sprintf(string str[, args...])                   : 格式化字符串并返回，类似C的sprintf函数
-vprintf(string str, array ary）                         : 类似printf，但是参数为数组
-string vsprintf(string str, array ary）                 : 类似sprintf，但是参数为数组
-string addslashes(string str)                           : 转易字符串中需要转义的字符并返回
-string stripslashes(string str)                         : 除去字符串中的转义字符并返回
-array explode(string separator, string str[, int limit]): 用separator分割字符串str，为一块为数组元素，limit参数限定分块数量
-string implode(string separator, array ary)             : 用separator为分隔符合并数组为字符串
-string join(string separator, array ary)                : 同implode
-string strtoupper(string str)                           : 将字符串转化为大写
-string strtolower(string str)                           : 将字符串转化为小写
+chop(string str)                                         : 清除字符串头部的空格与尾部的空格
+ltrim(string str)                                        : 清除字符串头部的空格
+rtrim(string str)                                        : 清除字符串尾部的空格
+nl2br(string str)                                        : 用html的<br />替换字符串中的换行符
+printf(string str[, args...])                            : 格式化输出字符串，类似C的printf函数 
+string sprintf(string str[, args...])                    : 格式化字符串并返回，类似C的sprintf函数
+vprintf(string str, array ary）                          : 类似printf，但是参数为数组
+string vsprintf(string str, array ary）                  : 类似sprintf，但是参数为数组
+string addslashes(string str)                            : 转易字符串中需要转义的字符并返回
+string stripslashes(string str)                          : 除去字符串中的转义字符并返回
+array explode(string separator, string str[, int limit]) : 用separator分割字符串str，为一块为数组元素，limit参数限定分块数量
+string implode(string separator, array ary)              : 用separator为分隔符合并数组为字符串
+string join(string separator, array ary)                 : 同implode
+string strtoupper(string str)                            : 将字符串转化为大写
+string strtolower(string str)                            : 将字符串转化为小写
