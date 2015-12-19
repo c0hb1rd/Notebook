@@ -26,7 +26,7 @@ int count(array ary) 					: 返回数组的元素个数
 int sizeof(array ary) 					: 同count，返回数组的元素个数
 array array_count_values(array ary) 			: 返回关联型数组，key为原数组元素，value为对应key在原数组中出现的个数
 
-4、神器
+4、神器(友情提示：可以用于对_POST/_GET/_REQUEST这些数组的元素进行提取)
 extract(array ary[, int extract_type][, string prefix]) : 将数组中的键值对生成变量，key为变量名，value为对应变量值
     参数二的值为：
 	EXTR_OVERWRITE 					: 当发生冲突时，覆盖已有变量 
