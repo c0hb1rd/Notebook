@@ -32,5 +32,5 @@ string stristr(string str, string needle)                                      :
 string strrchr(string str, string needle)                                      : 同strstr，但是匹配最后一个出现的needle
 int strpos(string str, string needle)                                          : 同strstr，但是返回的是字符串的索引（官方doc推荐使用，因为速度快）
 int strrpos(string srt, string needle)                                         : 同strpos，但是返回的索引为最后一个出现的needle
-mixed str_replace(string needle, string new_needle, string str[, int count])   :
-string substr_replace(string str, string replacement, int start, int [length]) :
+mixed str_replace(string needle, string new_needle, string str[, int count])   : 用new_needle替换str中的needle，count为可选，设置替换的次数（参数可接受数组，比如用new_needle替换needle数组中出现的所有单词）
+string substr_replace(string str, string replacement, int start[, int length]) : 用replacement替换str中指定索引的字符，length支持负数，表示末尾第length个字符开始禁止替换
