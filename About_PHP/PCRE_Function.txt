@@ -1,0 +1,1 @@
+mixed preg_filter(mixed $pattern, mixed $replacement, mixed $subject[, int $limit=-1[, int &$count ]])
