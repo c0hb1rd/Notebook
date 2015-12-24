@@ -32,4 +32,7 @@ preg_last_error：返回最后一次正则执行的错误代码
 	 PREG_RECURSION_LIMIT_ERROR ： 递归限制超出
 	 PREG_BAD_UTF8_ERROR        ： UTF-8数据异常
 	 PREG_BAD_UTF8_OFFSET_ERROR ： 偏移量与合法的UTF-8代码不匹配
-	 
+
+preg_match_all — 执行一个全局正则表达式匹配
+原型：int preg_match_all(string pattern, string subject[, array matches[, int flags = PREG_PATTERN_ORDER[, int offset = 0]]])
+说明：
