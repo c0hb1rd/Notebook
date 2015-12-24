@@ -25,7 +25,7 @@ preg_last_error：返回最后一次正则执行的错误代码
 原型：
      int preg_last_error(void)
 说明：
-	 返回值为一下全局常量：
+	 返回值为以下全局常量：
 	 PREG_NO_ERROR              ： 没有错误
 	 PREG_INTERNAL_ERROR        ： 表示PCRE有内部错误
 	 PREG_BACKTRACK_LIMIT_ERROR ： 回溯限制超出
