@@ -1,31 +1,26 @@
 preg_replace：搜索替换
-原型：
-     mixed preg_replace(mixed pattern, mixed replacement, mixed subject[, int limit = -1[, int count]])
-说明：
-     搜索subject中与pattern匹配的部分，用replacement替换
+原型：mixed preg_replace(mixed pattern, mixed replacement, mixed subject[, int limit = -1[, int count]])
+说明：搜索subject中与pattern匹配的部分，用replacement替换
      如果replacement是一个字符串，但是pattern是个数组，则所有pattern都用replacement替换
      如果replacement和parrern都是数组，则对应索引替换，当relpacement超出索引，则用空字符串进行替换
      如果subject是一个数组，搜索和替换会在每一个元素上进行，并且返回值也会是一个数组
      limit是最大替换次数，默认-1表示无穷大
      count为替换的次数，传入一个int变量并把次数赋值给这个变量
-	 
+	
+     
 preg_filter：同preg_replace，搜索替换
-原型：
-     mixed preg_replace(mixed pattern, mixed replacement, mixed subject[, int limit = -1[, int count]])
-说明：
-     与preg_replace的区别是当subject是数组时，如果元素匹配时无匹配或为空，则返回一个空数组，其它情况则返回NULL
+原型：mixed preg_replace(mixed pattern, mixed replacement, mixed subject[, int limit = -1[, int count]])
+说明：与preg_replace的区别是当subject是数组时，如果元素匹配时无匹配或为空，则返回一个空数组，其它情况则返回NULL
+
 
 preg_grep：返回一个由原数组中匹配的元素组成的数组
-原型：
-     array preg_grep(string pattern, array input[, int flags = 0])
-说明：
-     flags默认为0，如果设置为PREG_GREP_INVERT，则会返回不匹配的元素组成的数组
+原型：array preg_grep(string pattern, array input[, int flags = 0])
+说明：flags默认为0，如果设置为PREG_GREP_INVERT，则会返回不匹配的元素组成的数组
+
 
 preg_last_error：返回最后一次正则执行的错误代码
-原型：
-     int preg_last_error(void)
-说明：
-     返回值为以下全局常量：
+原型：int preg_last_error(void)
+说明：返回值为以下全局常量
      PREG_NO_ERROR              ： 没有错误
      PREG_INTERNAL_ERROR        ： 表示PCRE有内部错误
      PREG_BACKTRACK_LIMIT_ERROR ： 回溯限制超出
@@ -33,6 +28,14 @@ preg_last_error：返回最后一次正则执行的错误代码
      PREG_BAD_UTF8_ERROR        ： UTF-8数据异常
      PREG_BAD_UTF8_OFFSET_ERROR ： 偏移量与合法的UTF-8代码不匹配
 
-preg_match_all — 执行一个全局正则表达式匹配
+
+preg_match_all：执行一个全局正则表达式匹配
 原型：int preg_match_all(string pattern, string subject[, array matches[, int flags = PREG_PATTERN_ORDER[, int offset = 0]]])
-说明：
+说明：搜索subject中所有匹配pattern的结果并将它们以flag指定输出到matches中
+     offset参数为从指定索引开始匹配
+     返回值为匹配次数，如果有错误则返回false
+     
+
+preg_match：执行一个正则表达式匹配
+原型：int preg_match(string pattern, string subject[, array matchs[, int flag = 0[, int offset = 0]]])
+说明：搜索subject中与pattern匹配的一个内容
