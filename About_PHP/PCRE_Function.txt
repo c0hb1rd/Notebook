@@ -39,3 +39,18 @@ preg_match_all：执行一个全局正则表达式匹配
 preg_match：执行一个正则表达式匹配
 原型：int preg_match(string pattern, string subject[, array matchs[, int flag = 0[, int offset = 0]]])
 说明：搜索subject中与pattern匹配的一个内容
+
+
+preg_quote：转义正则表达式字符
+原型：string preg_quote(string str[, string delimiter = NULL)
+说明：delimiter指定的字符也会被转义，通常用于转义分隔符
+
+
+preg_replace_callback：执行一个正则表达式搜索并且用一个回调进行替换
+原型：mixed preg_replace_callback(mixed pattern, callable callback, mixed subject[, int limit = -1[, int count]])
+说明：除了可以指定一个callback替代replacement之外，其它同preg_replace函数
+
+
+preg_split：通过一个正则表达式分隔字符串
+原型：array preg_split(string pattern, string subject[, int limit = -1[, int flags = 0]])
+说明：返回一个使用pattern为边界分隔subject后得到的子字符串组成的数组
