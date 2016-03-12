@@ -1,0 +1,226 @@
+0x00 Define Var:
+    var x int
+    var x string
+    var x float
+
+    var x int = 1          <=>   v := 1 (type int)
+    var x str = "string"   <=>   x := "string"  (type string)
+    var x float = 1.0      <=>   x := 1.0 (type float)
+
+
+0x01 Define Array:
+    var x [n]int
+    var x [n]string
+    var x [n]float
+
+
+0x02 Define Slice:
+    var x = [n]int{}       <=>   x := [n]int{}
+    var x = [n]string{}    <=>   x := [n]string{}
+    var x = [n]float{}     <=>   x := [n]float{}
+
+    Index of slice can be hidden:
+    var x = []int{}        <=>   x := []int{} (length is 0, type is []int)   <=>   var x []int
+
+    Slice can contain another slice:
+    var x = [][]int {
+        []int{},
+        []int{},
+    }
+
+    Example:
+    var gameBoard = [][]string {
+        []string{"__", "__", "__"}
+        []string{"__", "__", "__"}
+        []string{"__", "__", "__"}
+    }
+
+    fmt.Printf("[*]Length is %d, type is %T.\n", len(gameBorad), gameBoard)
+    ---------------------------------------------------------------------
+    [*]Length is 3, type is [][]string.
+    ---------------------------------------------------------------------
+
+    Generated a slice via make functions:
+    var x = make([]int, len)
+    var x = make([]int, len, cap)
+    x := make([]int, len)
+    x := make([]int, len, cap)
+    "len" is the current length, "cap" is the max length
+
+    Add a new elements:
+    var x = []int{}
+    x = append(x, n)
+    //append(slice, valueTypeOfSlice)
+
+
+0x03 Define struct:
+    type myStruct {
+        field_1 type,
+        field_2 type,
+        ...,
+    }
+    x := myStruct{
+        value1,
+        value2,
+    }
+    y := x.field_1 (value1)
+    z := x.field_2 (value2)
+
+
+0x04 Define map:
+    Before use map, need to make it:
+    var x map[key_type]value_type
+    x = make(map[key_type]value_type)
+    x[key_type] = value_type(xxxxx)
+
+    Example:
+    var x map[string]string
+    x = make(map[string][string])
+    x["first"] = "hello,world"
+
+    Use it without make:
+    var x = map[key_type]value_type
+    var x = map[key_type]value_type{
+        key_type(xxx): value_type(xxx),
+        key_type(xxx): value_type(xxx),
+        ...,
+    }
+
+    Example:
+    var x = map[string]string {
+        "first": "hello",
+        "second": "world",
+        ...,
+    }
+
+    Use struct to be key type or value type:
+    type myStruct {
+        filed_1 type,
+        filed_2 type,
+    }
+    var x = map[myStruct][myStruct]{
+        myStruct{field_1, field_2}: myStruct{field_1, field_2},
+        myStruct{field_1, field_2}: myStruct{field_1, field_2},
+        ...,
+    }
+
+    Example:
+    type list {
+        v int,
+        s string,
+    }
+    var x = map[int][list]{
+        0: list{1, "hello"},
+        1: list{2, "world"},
+    }
+    fmt.Println(x)
+    ---------------------------------------------------------------------
+    map[0:{1, "hello"} 1:{2, "world"}]
+    ---------------------------------------------------------------------
+
+    Delete a element:
+    var x = map[string]string {
+        "key": "value"
+    }
+    delete(x, key)
+
+
+0x05 Define function:
+    func myFunction(x type) {
+        //method
+    }
+
+    func myFunction(x, y type, z type) return_type {
+        //method
+        return valueTypeOfReturnType
+    }
+
+    Use functions like a Right Value:
+    func myFunction(x type) {
+        //method
+    }
+    myNewFunction := myFunction (myNewFunction method body as same as myFunction)
+
+
+0x06 For loop:
+    for statement1; condition; statement2 {
+        //loop body
+    }
+
+    for ; condition; statement2 {
+        //loop body
+    }
+
+    for statement1; condition; {
+        //loop body
+    }
+
+    Like C's while:
+    for condition {
+        //loop body
+    }
+
+    Iteration map of slice via range:
+    var x = map[key_type]value_type
+    for key, value range x{
+        //loop body
+    }
+
+    var x = []int{}
+    for index, element range x {
+        //loop body, map as same as this
+    }
+    for index range x{
+        //loop body, map as same as this
+    }
+    for _, element range x{
+        //loop body, map as same as this
+    }
+
+
+0x07 If-else:
+    if condition {
+        //body
+    } else if condition {
+        //body
+    } else {
+
+    }
+
+
+0x08 Switch and fallthrough
+    switch statement {
+        case x:
+        case y:
+        case z:
+        default:
+    }
+
+    switch {
+        case condition_x:
+        case condition_y:
+        case condition_z:
+        default:
+    }
+
+    If define "fallthrough" end of case body, the switch will continue execute the next branch
+    switch statement {
+        case x:
+            fallthrough
+        case y:
+            fallthrough
+        case z:
+            fallthrough
+        default:
+    }
+
+
+0x09 Pointer:
+    as same as C's pointer, but in golang  has no pointer arithmetic
+    x := 1
+    p := &x
+    *p = 2
+
+    type myStruct { field_1 type, ..., }
+    y := &myStruct
+    z := y.field
