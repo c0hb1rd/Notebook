@@ -54,14 +54,14 @@
 
 
 0x03 Define struct:
-    type myStruct {
+    type myStruct struct {
         field_1 type,
         field_2 type,
-        ...,
+        ...
     }
     x := myStruct{
         value1,
-        value2,
+        value2
     }
     y := x.field_1 (value1)
     z := x.field_2 (value2)
@@ -90,13 +90,13 @@
     var x = map[string]string {
         "first": "hello",
         "second": "world",
-        ...,
+        ...
     }
 
     Use struct to be key type or value type:
-    type myStruct {
-        filed_1 type,
-        filed_2 type,
+    type myStruct struct {
+        filed_1 type
+        filed_2 type
     }
     var x = map[myStruct][myStruct]{
         myStruct{field_1, field_2}: myStruct{field_1, field_2},
@@ -105,11 +105,11 @@
     }
 
     Example:
-    type list {
-        v int,
-        s string,
+    type list struct {
+        v int
+        s string
     }
-    var x = map[int][list]{
+    var x = map[int]list{
         0: list{1, "hello"},
         1: list{2, "world"},
     }
@@ -171,11 +171,24 @@
         //loop body, map as same as this
     }
     for index range x{
-        //loop body, map as same as this
+        //hidden value, map as same as this
     }
     for _, element range x{
-        //loop body, map as same as this
+        //hidden index, map as same as this
     }
+
+    Function closure:
+    func myFuncrion() func (type_1, ...) type {
+        x := n
+        return func (y type_1, ...) type {
+            x += y
+            return type(x)
+        }
+
+    }
+    myNewFunction1 := myFunction()
+    myNewFunction2 := myFunction()
+    //myNewFunction1 and myNewFunction2 has different return value.
 
 
 0x07 If-else:
@@ -216,11 +229,204 @@
 
 
 0x09 Pointer:
-    as same as C's pointer, but in golang  has no pointer arithmetic
+    As same as C's pointer, but in golang  has no pointer arithmetic
     x := 1
     p := &x
     *p = 2
 
-    type myStruct { field_1 type, ..., }
+    Pointers to struct:
+    type myStruct struct { field_1 type, ..., }
     y := &myStruct
     z := y.field
+
+
+0x10 Methods:
+    Go does not have classes, but you can define methods on types:
+    Example:
+    package main
+
+    import "fmt"
+
+
+    type Person struct {
+        name string
+        age int
+        sex string
+    }
+
+    func (x Person) getName() string {
+        return x.name
+    }
+
+    func (x Person) getAge() int {
+        return x.age
+    }
+
+    func (x Person) getSex() string {
+        return x.sex
+    }
+
+    func main() {
+        me := Person{"c0hb1rd", "21", "Male"}
+        fmt.Println("My name is", me.getName(), ".");
+        fmt.Println("I'm", me.getAge(), "years old.");
+        if me.getSex == "male" {
+            fmt.Println("I'm a boy.")
+        } else {
+            fmt.Println("I'm a girl.")
+        }
+    }
+    ---------------------------------------------------------------------
+    My name is c0hb1rd.
+    I'm a 22 years old.
+    I'm a boy.
+    ---------------------------------------------------------------------
+
+    Before define methods for base date-type , need to type a new name with it:
+    type NewString string
+    func (x NewString) MyMethod() {
+        //method body
+    }
+    x := NewString
+    x.MyMethod()
+
+
+0x11 Interface:
+    type MyInterface interface {
+        MyMethod1() type
+        ...
+    }
+
+    var x MyInterface
+    //x must implement the MyMethod1()
+    type MyStruct struct {}
+    func (x MyStruct) SayGoodbye() {}
+    y := MyStruct{}
+    x = y
+    x.SayGoodbye()
+
+    Hidden interface:
+    type ShowInterface1 interface {
+        Method()1
+        Method()2
+    }
+
+    type ShowInterface2 interface {
+        Method()3
+        Method()4
+    }
+
+    type HiddenInterface interface{
+        ShowInterface1
+        ShowInterface2
+    }
+
+    Empty interface, it may hold values of any type:
+    var i interface{}
+    i = int(x) (type int)
+    i = string(y) (type string)
+
+    But if not empty interface:
+    var i interface{} = "string"
+    f, judge := i.(string) //f = string, judge = true
+    f, judge := i.(int) //f = 0 (type string), judge = false
+    f := i.(int) //error!!
+
+    Empty interface with switch:
+    func do(i interface{}) {
+        switch i.(type) {
+            case int:
+            case string:
+            ...
+            default:
+        }
+    }
+
+
+0x12 String():
+    Like python's "__str__":
+    Example:
+    type MyStruct struct {
+        field_1 type
+    }
+
+    func (x MyStruct) String() {
+        return fmt.Sprintf("what you wanna output")
+    }
+
+    func main() {
+        v := MyStruct{ field_1 }
+        fmt.Println(v)
+    }
+    ---------------------------------------------------------------------
+    what you wanna output
+    ---------------------------------------------------------------------
+
+
+0x13 Error():
+    Like String(), when function return an error value, it will invoke Error() to return error information:
+    Example:
+    import {
+        "time"
+        "fmt"
+    }
+
+    type MyError string
+
+    func (x *MyError) Error() string {
+        return fmt.Sprintf("At %v: %s", time.Time(), "Some error")
+    }
+
+    func MySqrt(x float64) (float64, error)
+
+    func main() {
+        if i, err := MySqrt(-4); err != nil {
+            fmt.Println(err)
+        } else {
+            fmt.Println(i)
+        }
+    }
+    ---------------------------------------------------------------------
+    "At xxxx: Some error."
+    ---------------------------------------------------------------------
+
+
+0x14 Readers:
+    A I/O interface, implement Read([] byte) (n int, err error) method which accept a slice buffer to read I/O data stream and returns the number of byte
+    Example:
+    package main
+    import (
+        "fmt"
+        "string"
+        "io"
+    )
+
+    func main() {
+        reader := string.NewReader("Goodbye, world.")
+
+        buffer = make([] byte, 8)
+        for {
+            len, err = reader.Read(buffer)
+            fmt.Printf("[*]Buffer read length = %d\n", len)
+            fmt.Printf("[*]Buffer current content = %q", buffer[:len])
+            if err == io.EOF {
+                break
+            }
+            fmt.Println()
+        }
+    }
+    ---------------------------------------------------------------------
+    [*]Buffer read length = 8
+    [*]Buffer current content = "Goodbye,"
+    [*]Buffer current content = [71 111 111 100 98 121 101 44]
+
+    [*]Buffer read length = 7
+    [*]Buffer current content = " world."
+    [*]Buffer current content = [32 119 111 114 108 100 46]
+
+    [*]Buffer read length = 0
+    [*]Buffer current content = ""
+    [*]Buffer current content = []
+    ---------------------------------------------------------------------
+
+0x15 Goroutine:
