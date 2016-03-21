@@ -435,3 +435,95 @@
         //method body
     }
     go someWork() //a new thread to run this function
+
+    Run a anonymous function:
+    go func() {
+        //method body
+    }
+
+0x16 Channel:
+    Cnannels are a typed conduit through which you can send and receive values with the channel operator '<-'
+    Like map and slice, channels must be created before use:
+    const BUFFER_SIZE int = 8
+    ch1 := make(chan int)
+    ch2 := make(chan int, bufferSize) //Sends to a buffered channel block only when the buffer is full
+                                      //Receive block when the buffer is empty
+
+    range and close:
+    const BUFFER_SIZE int = 8
+    ch := make(chan int, BUFFER_SIZE)
+    for i := 1; i <= BUFFER_SIZE; i++ {
+        ch <- i
+    }
+    close(ch) //Close a channel indicate that no more values will be sent
+              //If do not that, the goroutines are asleep and become a deadlock
+    for value := range ch {
+        fmt.Println(value)
+    }
+    ---------------------------------------------------------------------
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    ---------------------------------------------------------------------
+
+0x17 Select:
+    The selete statement lets a goroutine wait on multiple communication operations.
+    A select blocks until one of its cases can run, then it execute that case.
+    It chooses one at random if multiple are ready.
+    Example:
+    package main
+
+    import "fmt"
+
+    func fibonacci(c, quit chan int) {
+        x, y := 0, 1
+        for {
+            select {
+            case c <- x: //(1) 直到可以发送x到channel里面，不然一直阻塞，与(2)对应
+                x, y = y, x+y
+            case <-quit: //当可以从quit中接收数据流，执行这个case，终止loop
+                fmt.Println("Quit")
+                return
+            }
+        }
+    }
+
+    func main() {
+        c := make(chan int)
+        quit := make(chan int)
+
+        go func() {
+            for i := 0; i < 10; i++ {
+                fmt.Println(<-c) //(2)这个线程开始阻塞，直到能从c这个channel里面接收到数据流，与(1)对应
+            }
+            quit <- 1
+        }()
+
+        fobonacci(c, quit)
+    }
+    ---------------------------------------------------------------------
+    0
+    1
+    1
+    2
+    3
+    5
+    8
+    13
+    21
+    34
+    Quit
+    ---------------------------------------------------------------------
+
+    But if select statement have the default case, it will never blocks thread
+    selecr {
+    case condition_1:
+    case condition_2:
+    default:
+        //statement
+    }
