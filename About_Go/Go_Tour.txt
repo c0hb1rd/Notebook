@@ -430,3 +430,8 @@
     ---------------------------------------------------------------------
 
 0x15 Goroutine:
+    A lightweight thread managed by the go runtime
+    func someWork() {
+        //method body
+    }
+    go someWork() //a new thread to run this function
