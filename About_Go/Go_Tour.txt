@@ -606,3 +606,29 @@
     10
     true
     ---------------------------------------------------------------------
+
+0x19 Sync.Mutex:
+    One of mutex in golang
+    When you just wanna make sure only one goroutine can access a variable at a time to avoid conficts
+    if has two methods:
+    Lock() and Unlock()
+    Example:
+    package main
+
+    import "sync"
+
+    type SafeVar struct {
+        x int
+        mux sync.Mutex
+    }
+
+    func main() {
+        c := SafeVar{x: 1}
+        for i := 0; i < 1000; i++ {
+            go func(){
+                c.mux.Lock()
+                c.x++
+                c.mux.Unlock()
+            }()
+        }
+    }
