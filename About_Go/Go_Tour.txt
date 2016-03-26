@@ -15,9 +15,10 @@
 
 
 0x02 Define Slice:
-    var x = [n]int{}       <=>   x := [n]int{}
-    var x = [n]string{}    <=>   x := [n]string{}
-    var x = [n]float{}     <=>   x := [n]float{}
+    Before use slice, it must create via buildin make
+    var x = make([]int, n)       <=>   x := []]int{x, x1, x2, ...}    //len(x) == n
+    var x = make([]string, n)    <=>   x := []string{x, x1, x2, ...}    //len(x) == n
+    var x = make([]float, n)     <=>   x := []float{x, x1, x2, ...}    //len(x) == n
 
     Index of slice can be hidden:
     var x = []int{}        <=>   x := []int{} (length is 0, type is []int)   <=>   var x []int
@@ -141,6 +142,39 @@
     }
     myNewFunction := myFunction (myNewFunction method body as same as myFunction)
 
+    Multi-Args:
+    Example:
+    func Sum(nums ...int) int {
+        total := 0
+        for _, v := nums {
+            total += v
+        }
+        return total
+    }
+
+    func main() {
+        x := []int{1, 2, 3, 4}
+        fmt.Println(Sum(x...)) //Note!!! Argument type of slice must add '...' in the end
+        fmt.Println(Sum(1, 2, 3, 4))
+    }
+    ---------------------------------------------------------------------
+    10
+    10
+    ---------------------------------------------------------------------
+
+    Function closure:
+    func myFuncrion() func (type_1, ...) type {
+        x := n
+        return func (y type_1, ...) type {
+            x += y
+            return type(x)
+        }
+
+    }
+    myNewFunction1 := myFunction()
+    myNewFunction2 := myFunction()
+    //myNewFunction1 and myNewFunction2 has different pointer of return value.
+
 
 0x06 For loop:
     for statement1; condition; statement2 {
@@ -176,19 +210,6 @@
     for _, element range x{
         //hidden index, map as same as this
     }
-
-    Function closure:
-    func myFuncrion() func (type_1, ...) type {
-        x := n
-        return func (y type_1, ...) type {
-            x += y
-            return type(x)
-        }
-
-    }
-    myNewFunction1 := myFunction()
-    myNewFunction2 := myFunction()
-    //myNewFunction1 and myNewFunction2 has different return value.
 
 
 0x07 If-else:
