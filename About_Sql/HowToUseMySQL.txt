@@ -124,7 +124,7 @@
 	15、表删除唯一约束：ALTER TABLE tb_name DROP {INDEX | KEY} index_name;
 	16、表删除默认约束：ALTER TABLE tb_name ALTER colu_name DROP DEFAULT;
         
-	17、修改字段的定义：ALTER TABLE tb_name MODIF colu_name column_definition [FIRST | AFTER colu_name];
+	17、修改字段的定义：ALTER TABLE tb_name MODIFY colu_name column_definition [FIRST | AFTER colu_name];
 	18、修改字段的名字：ALTER TABLE tb_name CHANGE old_colu_name new_colu_name colu_definition [FIRST | AFTER colu_name]
 
 0x08 记录的增删改(查SELECT语句比较复杂，单独开一个模块)
