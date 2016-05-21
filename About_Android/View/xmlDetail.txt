@@ -1,0 +1,5 @@
+xml属性                                  相关方法                                 说明                                  
+alpha                                    setAlpha(float)                          透明度                               
+background                               setBackgroundResource(int)               背景颜色                            
+clickable                                setClickable(boolean)                    是否激发单击事件                
+contentDescription                       setContentDescription(CharSequence)      描述信息                            
