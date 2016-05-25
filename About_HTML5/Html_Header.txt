@@ -1,0 +1,42 @@
+0x00 HTML头部和元信息 
+    头部是对文档格式的一些声明，例如编码，标题，样式等
+
+
+0x01 script标签
+    用于包含脚本代码，比如常用的Javascript，Vbs
+    格式：
+    <script type="text/javascript">
+        //code...
+    </script>
+
+
+0x02 title标签
+    用于定义文档的标题
+    格式：
+    <title>Here is the document title that show on Web broswer Tab</title>
+
+
+0x03 link标签
+    用于引入文档所需的外部资源，比如js，css，icon等
+    格式：
+    <link rel="stylesheet" src="defatult.css" />
+
+
+0x04 base标签
+    定义文档中所有相对路径超链接的基准连接
+    格式：
+    <base href="127.0.0.1:8080/defaultPath/" target="_blank" />
+
+
+0x05 meta标签
+    定义文档的元信息，好的标识可以为搜索引擎建立关键字索引
+    1、http-equiv: 定义元信息的名称，常用值为：
+        (1) Expires: 指定页面过期的时间
+        (2) Pragma: 指定页面禁止缓存
+        (3) Refresh: 指定页面自动刷新所延迟的时间
+        (4) Set-Cookie: 设置Cookie
+        (5) Content-Type: 设定页面内容类型和字符集
+    2、content: 定义元信息的值
+    
+
+That's all.
