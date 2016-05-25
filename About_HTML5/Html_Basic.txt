@@ -96,4 +96,10 @@
     <mark>: 表示重点
     <time>: 表示时间
 
+
+0x12 HTML5新增特殊元素
+    <meter>: 计数仪表
+    <progress>: 进度条
+
+
 That's all.
