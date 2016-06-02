@@ -264,3 +264,6 @@
         a、resolution: 设备的物理分辨率
         b、scan: 设备的扫描方式
         c、grid: 设备是否基于柵格，boolean值，1真0假
+
+
+That's all.
