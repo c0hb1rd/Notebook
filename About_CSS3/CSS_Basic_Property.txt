@@ -34,7 +34,7 @@
     @font-face: 指定服务器字体的相关值，通常为font-family和src，目前只支持ttf和otf这两种字体
 
 
-0x04 背景相关属性 (27)
+0x04 背景相关属性 (28)
      _____________________________________
     |           外补丁区（margin）        |
     |   _______________________________   |
@@ -62,6 +62,7 @@
     background-origin: 设置背景覆盖的起点 same as background-position
     background-size: 设置背景图片的大小，有两个值，分别是宽度和高度
     background-clip: 设置背景覆盖区域，区域划分上图所示
+    opacity: 设置背景透明度
 
 
 0x05 边框相关属性(41)
