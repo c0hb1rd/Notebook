@@ -1,0 +1,266 @@
+0x00 CSS样式基础属性
+
+    
+0x01 字体相关属性 (15)
+    font: 复合属性，值为复合值，分别对应font-style，font-variant，font-weight，font-size，line-height，font-family
+    font-size: 字体大小
+    color: 字体颜色
+    font-family: 设置文字的字体
+    font-size-adjust: 设置字体是否微调
+    font-stretch: 设置字体拉伸
+    font-style: 设置字体风格
+    font-weight: 设置字体是否加粗
+    text-decoration: 设置字体修饰线，比如下划线
+    font-variant: 设置文字大写字母的格式
+    text-shadow: 设置文字阴影
+    text-transform: 设置文字大小写
+    line-height: 设置字体高度
+    letter-spacing: 设置字符间隔
+    word-spacing: 设置单词间隔
+
+
+0x02 文本相关属性 (8)
+    text-indent: 设置文本缩进
+    text-overflow: 设置溢出文本的处理方法
+    vertical-align: 设置垂直对齐
+    text-align: 设置水平对齐
+    direction: 设置文本流入方向
+    word-break: 设置文本的换行规则，默认不允许在单词中间换行
+    white-space: 设置目标组件中对文本空格的处理方式
+    word-wrap: 设置文本的换行方式
+
+
+0x03 导入服务器字体 (1)
+    @font-face: 指定服务器字体的相关值，通常为font-family和src，目前只支持ttf和otf这两种字体
+
+
+0x04 背景相关属性 (27)
+     _____________________________________
+    |           外补丁区(margin)          |
+    |   _______________________________   |
+    |  |         边框区(border)        |  | 
+    |  |   _________________________   |  |
+    |  |  |    内补丁区(padding)    |  |  |
+    |  |  |   ___________________   |  |  |
+    |  |  |  |                   |  |  |  |
+    |  |  |  |  内容区(content)  |  |  |  |
+    |  |  |  |___________________|  |  |  |
+    |  |  |                         |  |  |
+    |  |  |_________________________|  |  |
+    |  |                               |  |
+    |  |_______________________________|  |
+    |                                     |
+    |_____________________________________|
+
+    background: 设置背景样式
+    background-attachment: 设置背景图片固定还是随内容滚动
+    background-color: 设置背景色
+    background-image: 设置背景图片
+    background-position: 设置背景图片位置
+    background-repeat: 设置图片是否平铺
+    background-clip: 设置背景覆盖的范围
+    background-origin: 设置背景覆盖的起点 same as background-position
+    background-size: 设置背景图片的大小，有两个值，分别是宽度和高度
+    background-clip: 设置背景覆盖区域，区域划分上图所示
+
+
+0x05 边框相关属性(41)
+    border: 设置边框样式，也可以是复合值，分别是width，style，color
+    border-color: 设置边框颜色
+    border-style: 设置边框线型
+    border-width: 设置边框线宽
+
+    border-top: 设置上边框样式，复合值，分别是width，style，color
+    border-top-color: 设置上边框颜色
+    border-top-style: 设置上边框线型
+    border-top-width: 设置上边框线宽
+    border-top-colors: 设置边框渐变色，值为多个标准颜色值
+    border-top-left-radius: 设置边框左上角圆角半径
+    border-top-right-radius: 设置边框右上角圆角半径
+
+    border-bottom: 设置下边框样式，复合值，分别是width，style，color
+    border-bottom-color: 设置下边框颜色
+    border-bottom-style: 设置下边框线型
+    border-bottom-width: 设置下边框线宽
+    border-bottom-colors: 设置边框渐变色，值为多个标准颜色值
+    border-bottom-left-radius: 设置边框左下角圆角半径
+    border-bottom-right-radius: 设置边框右下角圆角半径
+
+    border-left: 设置左边框样式，复合值，分别是width，style，color
+    border-left-color: 设置左边框颜色
+    border-left-style: 设置左边框线型
+    border-left-width: 设置左边框线宽
+    border-left-colors: 设置边框渐变色，值为多个标准颜色值
+
+    border-right: 设置右边框样式，复合值，分别是width，style，color
+    border-right-color: 设置右边框颜色
+    border-right-style: 设置右边框线型
+    border-right-width: 设置右边框线宽
+    border-right-colors: 设置边框渐变色，值为多个标准颜色值
+
+    border-image: 设置边框图片，值比较复杂，详细如下
+        1、border-image-source: 设置图片资源位置
+        2、border-image-slice: 图片切片填充，复合值，多种格式
+            (1)一个值: 指定四边的切割程度
+            (2)二个值: 第一个值为上下边的切割程度，第二个值为左右两边的切割程度
+            (3)三个值: 第一个值为上边的切割程度，第二搁置为左右两边的切割程度，第三个值为下边的切割程度
+            (4)四个值: 分别对应四个边的切割程度
+            (5)前四种情况后在追加”&&fill“: 表示保留图片中间切割掉的部分
+
+
+0x06 内补丁相关属性(5)
+    padding: 设置padding区与content区的间距
+    padding-top: 设置padding区上边与content区的间距
+    padding-bottom: 设置padding区下边与content区的间距
+    padding-left: 设置padding区左边与content区的间距
+    padding-right: 设置padding区右边与content区的间距
+
+
+0x07 外补丁相关属性(5)
+    margin: 设置margin区与border的间距
+    margin-top: 设置margin区上边与border区的间距
+    margin-bottom: 设置margin区下边与border区的间距
+    margin-left: 设置margin区左边与border区的间距
+    margin-right: 设置margin区右边与border区的间距
+
+
+0x08 大小相关属性 (8)
+    height: 设置对象的高度
+    max-height: 设置对象的最大高度
+    min-height: 设置对象的最小高度
+    width: 设置对象的高度
+    max-width: 设置对象的最大高度
+    min-width: 设置对象的最小高度
+    box-sizing: 设置width和height控制的区域覆盖度，默认只控制content区
+    resize: 设置是否允许用户通过拖动来改变元素大小，针对设置有overflow属性的组件，textarea默认设置overflow
+
+
+0x09 定位相关属性 (6)
+    position: 设置目标对象的定位方式，值为absolute，relative和static
+    z-index: 设置目标对象的漂浮层层序，仅当position属性值为absolute或者relative时生效
+    top: 设置目标对象相对于最近一个有定位设置的父对象的顶边偏移
+    bottom: 设置目标对象相对于最近一个有定位设置的父对象的底边偏移
+    left: 设置目标对象相对于最近一个有定位设置的父对象的左边偏移
+    right: 设置目标对象相对于最近一个有定位设置的父对象的右边偏移
+
+
+0x0a 轮廓相关属性 (5)
+    outline: 设置轮廓样式，复合值，分别对应color，style，width
+    outline-style: 设置轮廓线型
+    outline-color: 设置轮廓颜色
+    outline-width: 设置轮廓宽度
+    outline-offset: 设置轮廓与边框的间距
+
+
+0x0b 布局相关属性 (8)
+    float: 设置组件浮动方式，一旦设置该属性，目标对象将被当做block对待
+    clear: 设置目标组件左右是否允许出现浮动对象(block对象)
+    clip: 设置组件裁剪，只有裁剪的区域才会显示
+    overflow: 设置组件内容溢出效果，可以为滚动条，隐藏等等
+    overflow-x: 同overflow，但只对水平方向起作用
+    overflow-y: 同overflow，但只对垂直方向起作用
+    diaplay: 设置对象如何显示，若隐藏，会连同占用空间一起隐藏
+    visibility: 设置对象是否显示，若隐藏，依旧占用相同空间
+
+
+0x0c display盒模型属性值 (17)
+    box: 设置为标准的盒模型，类似inline-block的特性
+    block: 默认占据一行的模型，左右两边不可以出现内容，可以设置width和height，比如div，p，table
+    inline: 默认不占据一行的模型，左右两边可以出现内容，不可以设置width和height，比如span，a
+    inline-block: 不占据一行，左右两边可以出现内容，可以设置width和height的模型
+    inline-table: 允许表格设置width和height，并且左右两边可以出现内容
+    table: 设置目标对象为表格模型
+    table-caption: 设置目标对象为表格标题
+    table-cell: 设置目标对象为表格单元
+    table-column: 设置目标对象为表格列
+    table-column-group: 设置目标对象为表格列组
+    table-header-group: 设置目标对象为表格头部分
+    table-footer-group: 设置目标对象为表格脚部分
+    table-row: 设置目标对象为表格行
+    table-row-group: 设置目标对象为表格行组
+    list-item: 设置目标对象为列表模型，比如ol，ul，dd
+    list-style-type: 设置列表模型的对象的排序符号
+    run-in: 类似inline模型，用于让目标对象显示在它之后的block模型对象的内部
+
+
+0x0d box盒模型特有属性 (4)
+    box-shadow: 设置盒模型的阴影，复合值，具体看官档
+    box-orient: 设置盒模型的子元素排列方式
+    box-ordinal-group: 设置盒模型里子元素的显示顺序(此属性设置与子元素中)
+    box-flex: 设置盒模型里子元素自适应宽度的比例，类Android的LinearLayout布局中的子容器的weight属性
+
+
+0x0e 分栏布局相关属性 (9) 
+    /* 
+    ** 分栏与多栏有区别，多栏可控性可高，推荐用盒模型实现多栏布局
+    */
+    columns: 设置栏目样式，复合属性，两个值，分别是column-width和column-count
+    column-width: 设置栏目宽度
+    column-count: 设置栏目列数
+    column-rule: 设置各栏目的分割条，复合值，三个值，分别是column-rule-width，column-rule-style，column-rule-color
+    column-rule-width: 设置各栏目分割条宽度
+    column-rule-style: 设置各栏目分割条线型
+    column-rule-color: 设置各栏目分割条颜色
+    column-gap: 设置各栏目的间距
+    column-fill: 设置各栏目的高度，值为auto和balance(已最高那一栏对齐)
+
+
+0x0f 表格相关属性 (5)
+    border-collapse: 设置表格行和单元格边框的显示方式，两个值，分别为边框分隔(seperate，双线)和边框合并(collapse，单线)
+    border-spacing: 设置边框间距
+    caption-side: 设置表格标题位于表格的哪边，默认为上边(top)
+    empty-cells: 设置当单元格内容为空时，是否显示边框，值为show和hide
+    table-layout: 设置表格宽度布局，默认为auto，另一个值为fixed
+
+
+0x10 列表相关属性 (4)
+    list-style: 设置列表样式，复合值，分别为list-style-image，list-style-position，list-style-type
+    list-style-position: 设置列表标记出现的位置
+    list-style-image: 设置列表标记的图片
+    list-style-type: 设置列表标记的类型，具体值看官档
+
+
+0x11 光标属性cursor的相关属性值(14)
+    all-scroll: 设置光标在目标对象上显示为十字箭头光标
+    col-resize: 设置光标在目标对象上显示为水平拖动光标
+    crosshair: 设置光标在目标对象上显示为十字线光标
+    move: 设置光标在目标对象上显示为移动十字箭头光标
+    help: 设置光标在目标对象上显示为带问号的箭头光标
+    no-drop: 设置光标在目标对象上显示为禁止光标
+    not-allowed: 设置光标在目标对象上显示为禁止光标
+    pointer: 设置光标在目标对象上显示为手型光标
+    progress: 设置光标在目标对象上显示为带沙漏的箭头光标
+    row-resize: 设置光标在目标对象上显示为垂直拖动光标
+    text: 设置光标在目标对象上显示为文本编辑光标
+    vertical-text: 设置光标在目标对象上显示为垂直文本光标
+    wait: 设置光标在目标对象上显示为沙漏光标
+    *-resize: 设置光标在目标对象上显示为对应方向的拖动光标，共8个方向，以英文东西南北单词首字母小写组成，带入"*"位置，比如e-resize
+    
+
+0x12 media query规则 (26)
+    语法： @media not|only Device-Type [and Device-Property]*    //以正则语法解读
+
+    Device-Type: 
+        1、all: 适用于所有的设备
+        2、aural: 适用于语音和音频合成器
+        3、braille: 适用于触觉反馈设备
+        4、embossed: 适用于凸点字符(盲文)印刷设备
+        5、handheld: 适用于小型或手提设备
+        6、print: 适用于打印设备
+        7、screen: 适用于计算机显示器
+        8、tty: 适用于适用固定间距字符格的设备，比如terminal
+        9、tv: 适用于电视类设备
+
+    Device-Property:
+        1、width: 浏览器窗口宽度
+        2、height: 浏览器窗口高度
+        3、aspect-ratio: 浏览器高宽比
+        4、device-width: 设备分辨率宽度
+        5、device-height: 设备分辨率高度
+        6、device-aspect-ratio: 设备分辨率高宽比
+        7、color: 设备位色，真色为32，0为黑白
+        8、color-index: 彩色表中的颜色数
+        9、monochrome: 单色帧缓冲器中每位像素的位数
+        a、resolution: 设备的物理分辨率
+        b、scan: 设备的扫描方式
+        c、grid: 设备是否基于柵格，boolean值，1真0假
