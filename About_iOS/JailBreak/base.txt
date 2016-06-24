@@ -1,0 +1,45 @@
+0x00 越狱基础
+
+
+0x01 非完美越狱（TetheredJailbreaks）
+    定义：指设备重启后权限就消失的越狱
+    方案：由一个提权代码漏洞组成，或一个非提权漏洞结合其它提权漏洞
+
+
+0x02 完美越狱（UntetheredJailbreaks）
+    定义：设备重启后权限不会消失
+    方案：通常在某种非完美越狱的基础上，结合附加的允许在设备上保持的漏洞组成，用非完美时获得的权限在设备根目录文件系统上安装附加漏洞。由于首先专有未签名代码必须执行，其次是权限要提升以便能对内核打补丁，所以至少需要两个附加漏洞
+    需求漏洞类型：低级别的硬件存取，沙盒内的许可权限
+
+
+0x03 Bootrom
+    定义：针对硬件内部，这种漏洞不能通过软件更新推送来修复，因此生命周期最健全最有力，理论上讲无法修复,只能在下一代的硬件版本里修复
+    功能：在启动环节替换或修改内核的启动参数，拥有对硬件的全部读取权限，解密IMG3文件获取最新的iOS更新
+
+
+0x04 iBoot
+    定义：累死Bootrom级别，但是没有固化入硬件，因此可以通过软件升级来修复
+    功能：替换修改内核启动参数，对内核打补丁，或对硬件进行GID密码的AES操作
+
+
+0x05 Userland
+    定义：用户层面，通常用于远程注入，权限并不会很高
+
+
+0x06 越狱步骤
+    破解Bootrom（Exploiting The Bootrom）
+    启动Ramdisk（Booting The RAM Disk）
+    越狱文件系统（Jailbreak The File System）
+    安装完美越狱破解（Installing The Untethering Exploit）
+    安装AFC2服务（Installing The AFC2 Service）
+    安装基本程序库（Installing Base Utilities）
+    应用程序隐藏（Application Stashing）
+    安装程序包（Bundle Installation）
+    安装后过程（Post Installation Process）
+    执行内核Payloads并修改内核（Executing Kernel Payload Sand Patches）
+    修复内核状态（Kernel State Reparation）
+    权限提升（Privilege Escalation）
+    修改内核（Kernel Patching）
+    修改沙盒（Sandbox Patches）
+    清空缓存（Clearing The Caches）
+    清理并返回（Clean Return）
