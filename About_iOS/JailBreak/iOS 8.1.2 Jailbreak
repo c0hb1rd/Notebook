@@ -1,0 +1,52 @@
+0x00 iOS 8.1.2 Jailbreak分析
+
+
+0x01 iOS保护机制
+	1、iOS代码签名机制
+		加密过程：包含摘要算法和非对称加密算法，先用摘要算法对资源进行计算，得出信息摘要，再用私钥加密
+	2、内存页保护机制
+	3、磁盘分区保护机制
+	4、Rootless保护机制
+		定义：在iOS上，root权限只有Apple官方自家应用才能拥有最高级root权限，而第三方应用即使获得root权限，这个权限也有一些特定操作无法执行，这个第三方应用root权限就称为Rootless
+	
+
+0x02 Jailbreak条件
+	1、破坏代码签名
+		先决条件：绕过沙盒
+		攻击目标：内核、amfid、libmiss.dylib
+	2、取得内存页读写操作权限
+		先决条件：破坏代码签名机制
+		攻击目标：内核
+	3、重新mount磁盘分区获得写入权限
+		先决条件：最高级root权限，非Rootless权限
+		攻击目标：重新mount分区取得写入权
+		
+
+0x02 使用的CVE列表
+Step1. 任意代码执行先决条件
+	sandbox的绕过：
+		CVE-2015-1087：沙盒默认开启服务Mobile Backup漏洞
+		CVE-2014-448 ：沙盒默认开启服务AFC漏洞
+	创造用户空间供任意代码执行：
+		CVE-2015-1062：沙盒默认开启服务Image Mounter漏洞
+	代码签名机制的绕过：
+		CVE-2014-4455：dyld动态链接器漏洞，让armid加载假的libmiss.dylib
+
+Step2. 内核攻击方案
+方案一：
+	获取KASLR的Slide：
+		CVE-2014-4491：内核漏洞
+	制造内核空间任意代码执行，内核写操作：
+		CVE-2014-4496：内核漏洞
+		CVE-2014-4487：IOHIDFamily漏洞
+	后续步骤：
+		利用Kernel Patch Finder找到保护机制的代码点以及一些ROP Gadgets，构造ROPP Chain来实现Kernel Patching
+方案二：
+	获取KASLR的Slide：
+		CVE-2014-4496：内核漏洞
+	制造一个任意大小读取利用：
+		CVE-2014-4487：IOHIDFamily漏洞
+	后续步骤：
+		读取某个已知对象的虚函数表，进而计算出内核加载的基地址，利用Kernel Patch Finder找到保护机制的代码点以及一些ROP Gadgets，构造ROPP Chain来实现Kernel Patching
+	Note：比方案一少一个漏洞	
+		
