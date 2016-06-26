@@ -1,13 +1,13 @@
-iOS 6.13, 6.14, 6.15: https://github.com/p0sixspwn/p0sixspwn
+iOS 6.13, 6.14, 6.15: <a href="https://github.com/p0sixspwn/p0sixspwn">https://github.com/p0sixspwn/p0sixspwn</a>
 Author: iH8sn0w
-Twitter: https://twitter.com/iH8sn0w
+Twitter: <a href="https://twitter.com/iH8sn0w">https://twitter.com/iH8sn0w</a>
 
 
-iOS 8.4.1: https://github.com/kpwn/yalu
+iOS 8.4.1: <a href="https://github.com/kpwn/yalu">https://github.com/kpwn/yalu</a>
 Author： Luca Todesco (不过Gayhub里作者名字写的是金正日。。。)
-Twitter: https://twitter.com/qwertyoruiopz
+Twitter: <a href="https://twitter.com/qwertyoruiopz">https://twitter.com/qwertyoruiopz</a>
 
 
-iOS 9.2.1: https://github.com/zhengmin1989/iOS_ICE_AND_FIRE
+iOS 9.2.1: <a href="https://github.com/zhengmin1989/iOS_ICE_AND_FIRE">https://github.com/zhengmin1989/iOS_ICE_AND_FIRE</a>
 Author: 蒸米（一发微博，底下评论满大街”不发越狱就取关“的存在。。。）
-Twitter： https://twitter.com/SparkZheng
+Twitter： <a href="https://twitter.com/SparkZheng">https://twitter.com/SparkZheng</a>
