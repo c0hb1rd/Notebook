@@ -1,0 +1,126 @@
+0x00 Global Config (2)
+    概述：Vue.js 全局配置变量
+
+
+0x01 Default Config Var (35)
+    1、debug：开启调试模式
+        type: boolean
+        default: false
+        Usage:
+            Vue.config.debug = true
+
+    2、delimiters：修改模板渲染定界符
+        type: Array<String>
+        defalult: ["{{", "}}"]
+        Usage:
+            Vue.config.delimiters = ['${', '}']
+
+    3、unsafeDelimiters: 修改原生 HTML 插值定界符
+        type: Array<String>
+        default: ["{{{", "}}}"]
+        Usage:
+            Vue.config.unsafeDelimiters = ['!!', '!!']
+
+    4、silent：取消Vue所有的日志与警告
+        type: Boolean
+        default: false
+        Usage:
+            Vue.config.silent = true
+
+    5、async：异步模式
+        type: Boolean
+        defaule: true
+        Usage:
+            Vue.config.async = false
+
+    6、devtools：配置是否允许 vue-devtools 检查代码
+        type: Boolean
+        default: true
+        Usage:
+            Vue.config.devtools = true
+
+
+0x02 Global API (60)
+    1、Vue.extend( options )：创建基础Vue构造器的子类，参数是一个对象，包含组件选项
+        ** Note：el 和 data 选项在 Vue.extend() 中它们必须是函数
+
+        Example：
+            #html:
+            <div id="mount-point"></div>
+
+            #js:
+            var Profile = Vue.extend({
+                template: '<p>{{ firstName }} {{ lastName }} aka {{ alias }}</p>'
+            });
+
+            var profile = new Profile({
+                data: {
+                    firstName: 'choi',
+                    lastName: 'c0hb1rd',
+                    alias: 'cc'
+                }
+            });
+
+            profile.$mount(' #mount-point' );
+
+            #result:
+            <p>choi c0hb1rd aka cc</p>
+
+    2、Vue.nextTick( callback )：延迟回调函数DOM更新在循环后执行，在修改数据之后立即使用这个方法，等待DOM更新
+
+    3、Vue.set( object, key, value)：设置对象的属性和值
+
+    4、Vue.delete( object, key)：删除对象的属性
+
+    5、Vue.directive( id, [defintion])：注册或获取全局指令
+        Example:
+        #js:
+        Vue.directive('my-directive', {
+            bind: function() {},
+            update: function() {},
+            unbind: function() {}
+        })
+
+        Vue.directive('my-directive' function() {
+            //this will be called as 'update'
+        })
+
+        //Get Already Regeister Command
+        Vue.myDirective = Vue.directive('my-directive')
+
+    6、Vue.elementDirective( id, [definition])：注册或获取全局的元素指令
+
+    7、Vue.filter( id, [definition] )：注册或获取全局过滤器
+
+    8、Vue.component( id, [definition] )：注册或获取全局组件
+
+    8、Vue.transition( id, [hooks] )：注册或获取全局的过渡钩子对象
+
+    9、Vue.partial( id, [partial] )：注册或获取全局的partial
+
+    10、Vue.use( plugin, [options] )：安装 Vue 插件，这个插件是一个对象，必须实现 install 方法
+
+    11、Vue.mixin( mixin )：全局应用一个混合，将影响所有 Vue 实例，插件作者可以用它向组件注入自定义逻辑
+
+
+0x03 Options / data
+    1、data：Vue 实例的数据对象，Vue.js 会递归将 data 的全部属性转为 getter / setter, 从而让它能响应数据变化
+        **Note：这个对象必须是原生对象
+        (1)访问：通过 $data 可以访问原生对象数据和通过赋值对象更新对象数据
+        (2)获得原始数据对象：把 $data 传入 JSON.parse(JSON.stringify( $data )) 得到原始数据对象
+
+    2、props：组件实例的作用域是孤立的，因此不应该在子组件中直接引用父组件的数据，所以可以通过 props 把数据传递给子组件
+        Example:
+        #html
+        <child msg="hello"></child>
+
+        #js
+        Vue.component('child', {
+            props: ['msg'],
+            template: '<span>{{ msg }}</span>'
+        })
+
+        #result:
+        <span>hello</span>
+
+    3、
