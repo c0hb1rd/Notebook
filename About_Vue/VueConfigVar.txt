@@ -1,0 +1,25 @@
+0x00 Global Config
+    概述：Vue.js 全局配置变量
+
+
+0x01 Default Config Var
+    1、debug：开启调试模式
+        type: boolean
+        default: false
+        Usage:
+            Vue.config.debug = true
+    2、delimiters：修改模板渲染定界符
+        type: Array<String>
+        defalult: ["{{", "}}"]
+        Usage:
+            Vue.config.delimiters = ['${', '}']
+    3、unsafeDelimiters: 修改原生 HTML 插值定界符
+        type: Array<String>
+        default: ["{{{", "}}}"]
+        Usage:
+            Vue.config.unsafeDelimiters = ['!!', '!!']
+    4、silent：取消Vue所有的日志与警告
+        type: Boolean
+        default: false
+        Usage:
+            Vue.config.silent = true
