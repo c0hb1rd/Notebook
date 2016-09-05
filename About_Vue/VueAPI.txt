@@ -45,10 +45,10 @@
         ** Note：el 和 data 选项在 Vue.extend() 中它们必须是函数
 
         Example：
-            #html:
+            #html
             <div id="mount-point"></div>
 
-            #js:
+            #js
             var Profile = Vue.extend({
                 template: '<p>{{ firstName }} {{ lastName }} aka {{ alias }}</p>'
             });
@@ -63,7 +63,7 @@
 
             profile.$mount(' #mount-point' );
 
-            #result:
+            #result
             <p>choi c0hb1rd aka cc</p>
 
     2、Vue.nextTick( callback )：延迟回调函数DOM更新在循环后执行，在修改数据之后立即使用这个方法，等待DOM更新
@@ -74,7 +74,7 @@
 
     5、Vue.directive( id, [defintion])：注册或获取全局指令
         Example:
-        #js:
+        #js
         Vue.directive('my-directive', {
             bind: function() {},
             update: function() {},
@@ -103,7 +103,7 @@
     11、Vue.mixin( mixin )：全局应用一个混合，将影响所有 Vue 实例，插件作者可以用它向组件注入自定义逻辑
 
 
-0x03 Options / data
+0x03 Options / data (92)
     1、data：Vue 实例的数据对象，Vue.js 会递归将 data 的全部属性转为 getter / setter, 从而让它能响应数据变化
         **Note：这个对象必须是原生对象
         (1)访问：通过 $data 可以访问原生对象数据和通过赋值对象更新对象数据
@@ -123,4 +123,158 @@
         #result:
         <span>hello</span>
 
-    3、
+    3、propsData：只能在 new 一个 Vue 实例时使用
+        Example:
+        #html
+        <div id="mount-point"></div>
+
+        #js
+        var Comp = Vue.extend({
+            props: ['msg'],
+            template: '<div>{{ msg }}</div>'
+        })
+
+        var vm = new Comp({
+            el: '#mount-point',
+            propsData: {
+                msg: 'hello'
+            }
+        })
+
+        #result
+        <div id="mount-point">hello</div>
+
+    4、computed：实例的计算属性
+        Example:
+        #js
+        var vm = new Vue({
+            data: { a: 1 },
+            computed: {
+                aDouble: function () {
+                    return this.a * 2
+                },
+                aPlus: function () {
+                    get: function () {
+                        return this.a + 1
+                    },
+                    set: function (v) {
+                        return this.a + v
+                    }
+                }
+            }
+        })
+
+    5、methods：实例方法，实例可以直接访问这些方法，也可以用在指令表达式内，方法的 this 自动绑定到实例
+        Example:
+        #js
+        var vm = new Vue({
+            data: { a: 1 },
+            methods: {
+                plus: function () {
+                    this.a++
+                }
+            }
+        })
+
+    6、watch：返回以某个对象作为参数后，函数执行完毕这个对象的结果
+        Example:
+        #js
+        var vm = new Vue({
+            data: { a: 1 },
+            watch: {
+                'a': fcuntion (val, oldVal) {
+                    console.log('new %s, old %s', val, oldVal)
+                },
+                // xxxx 指某个函数名
+                'b': 'xxxx',
+                // 深度 watcher，可以返回对象内部值的变化情况
+                'c': {
+                    handler: function (val, oldVal) {
+
+                    },
+                    deep: true
+                }
+            }
+        })
+
+
+0x04 Options / DOM (8)
+    1、el：实例挂载元素，值可以是返回 HTML 元素的函数，可以时 CSS 选择器，可以是 HTML 标签
+        (1)访问：使用 Vue.$el 可以访问挂载值
+        (2)手动挂在：Vue.$mount('mount-point') 可以在 Vue 对象实例化后挂载
+
+    2、template：实例模板元素，模板元素会把挂载元素替换掉，除非声明 replace 为 false
+        **Note：常用的模板使用方法是用 '<script type="x-template"></script>' 包含模板
+
+    3、replace：实例模板替换元素，决定模板是否替换挂载元素，只能与 template 一起使用，默认值为 true
+
+
+0x05 Opions / Lifecycle Hooks (26)
+    1、init：在实例开始初始化是同步调用
+        **Note：此时数据观测，事件和 watcher 都尚未初始化
+
+    2、created：在实例创建之后同步调用
+        **Note：此时实例已经结束解析，意味着建立数据绑定，计算属性，方法，watcher / 时间回调，但还没有开始 DOM 编译，$el 还不存在
+
+    3、beforeCompile：在编译 DOM 开始之前调用
+
+    4、compiled：在 DOM 编译结束后调用
+        **Ｎote：此时所有指令已经生效，数据变化开始触发 DOM 更新，但是 $el 不一定存在
+
+    5、ready：在 DOM 编译结束后和 $el 第一次插入文档之后调用
+        **Note：必须是由 $appendTo() 等方法或指令更新才能触发，直接操作 $el 不会触发这个 hooks
+
+    6、attached：在 $el 插入 DOM 时调用
+        **Note：必须是由 $appendTo() 等方法或指令更新才能触发，直接操作 $el 不会触发这个 hooks
+
+    7、detached：$el 从 DOM 中删除时调用
+        **Note：必须是由指令或实例方法删除，直接操作 $el 不会触发这个 hooks
+
+    8、beforeDestory：在实例开始销毁是调用
+        **Note：此时实例仍然有功能
+
+    9、destroyed：在实例被销毁时调用
+        **Note：此时所有的绑定和实例的指令已经解绑，所有的实例已经被销毁
+
+
+0x06 Options / Assets (11)
+    1、directives：一个对象，包含指令,
+
+    2、elementDirecives：一个对象，包含元素指令
+
+    3、fiters：一个对象，包含过滤器
+
+    4、component：一个对象，包含组件
+
+    5、transitions：一个对象，包含过渡
+
+    6、partials：一个对象，包含 partial
+
+
+0x07 Ｏptions / Misc
+    1、parent：指定实例的父实例
+        **Ｎote：子实例被推入父实例的 $children 数组中
+        (1)访问父实例：通过 this.$parent 访问
+
+    2、events：监听事件对象，键是绑定的事件，值是对应的回调函数
+        (1)绑定生命周期事件：
+        Ｅxample：
+        #js
+        var vm = new Vue({
+            events: {
+                'hook:created': function () {
+                    console.log('created!')
+                },
+                greeting: function (msg) {
+                    console.log(msg)
+                },
+                bye: 'bye'
+            },
+            methods: {
+                sayGoodbye: function () {
+                    console.log('goodbye!')
+                }
+            }
+        })
+
+    3、mixins：混合对象数组，
