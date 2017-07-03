@@ -16,10 +16,21 @@
 ```
 
 # 创建本地仓库
-* 初始化：在某个路径下，输入git init就是初始化default的git repository，然后就是add和commit两条指令了，分别是增加项目和提交
-git init
-git add xxxx.xx
-git commit -m xxxxxxxxx
+* 实验流程
+  * 在任意路径下，输入git init，就是初始化一个仓库
+  * 创建一个 `README.md` 文件作为这个仓库的描述文件，一开始可以只写项目名等作为一个简单的介绍就可以
+  * 用 `git add` 命令将指定文件添加到索引库中
+  * 用 `git commit` 命令为这一次或者批次的添加动作做批注
+  * 最后就是推送本地仓库中的更新到远程仓库里做同步
+* 具体操作
+```
+  mkdir "项目文件夹"                        # 创建项目文件夹
+  cd "项目文件夹"                           # 切换目录到项目文件夹下
+  git init                                # 初始化本地仓库
+  echo '# 项目名称' > README.md             # 创建项目描述文件
+  git commit -m "这一次或这一批次的操作批注"   # 打上批注
+  git push origin master                  # 同步的远程仓库的主分支
+```
 ps:可以多条add，然后commit一次性提交所有项目，-m后面加的字符串是日志，可以加上改动提示方便阅读，比如，-m "change the first lines"
 
 版本查看：git status查有无change，git diff查change的content
