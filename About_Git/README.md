@@ -15,23 +15,26 @@ $ git config --global user.name "你的姓名"        #配置全局用户名
 $ git config --global user.email "你的邮箱"       #配置全局邮箱
 ```
 
-# 创建本地仓库
+# 创建仓库
 * 实验流程
-  * 在任意路径下，输入git init，就是初始化一个仓库
+  * 在 [Github](/https://github.com) 上注册用户
+  * 把本地的 `SSH` 公钥关联到用户下
+  * 创建一个空的仓库，仓库名自拟
+  * 在任意路径下，用 `git init` 初始化一个本地仓库
   * 创建一个 `README.md` 文件作为这个仓库的描述文件，一开始可以只写项目名等作为一个简单的介绍就可以
-  * 用 `git add` 命令将指定文件添加到索引库中
-  * 用 `git commit` 命令为这一次或者批次的改动做批注
+  * 用 `git add <path>` 命令将指定文件添加到索引库中
+  * 用 `git commit -m 'your note'` 命令为这一次或者批次的改动做批注
   * 最后就是推送本地仓库中的更新到远程仓库里做同步
 * 具体操作
 ```bash
-  $ mkdir "项目文件夹"                        # 创建项目文件夹
-  $ cd "项目文件夹"                           # 切换目录到项目文件夹下
-  $ git init                                # 初始化本地仓库
-  $ echo '# 项目名称' > README.md             # 创建项目描述文件
-  $ git commit -m "这一次或这一批次的操作批注"   # 添加改动批注
-  $ git push origin master                  # 同步的远程仓库的主分支
+$ mkdir "项目文件夹"                        #创建项目文件夹
+$ cd "项目文件夹"                           #切换目录到项目文件夹下
+$ git init                                #初始化本地仓库
+$ echo '# 项目名称' > README.md             #创建项目描述文件
+$ git add README.md                       #添加
+$ git commit -m "这一次或这一批次的操作批注"   #添加改动批注
+$ git push origin master                  #同步的远程仓库的主分支
 ```
-ps:可以多条add，然后commit一次性提交所有项目，-m后面加的字符串是日志，可以加上改动提示方便阅读，比如，-m "change the first lines"
 
 版本查看：git status查有无change，git diff查change的content
 git status：查看当前git repository的当前status，可以再指令之间自由穿插来看看what happens和which steps
