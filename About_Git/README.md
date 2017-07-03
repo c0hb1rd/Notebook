@@ -5,14 +5,14 @@
 # 环境配置
 * 安装
 ```bash
-  sudo apt install git -y
+$ sudo apt install git -y
 ```
-* 配置用户名和邮箱
-```
-  ## 如果只想当前环境下生效，可以把--global参数去掉
 
-  git config --global user.name "你的姓名"        #配置全局用户名
-  git config --global user.email "你的邮箱"       #配置全局邮箱
+* 配置用户名和邮箱
+```bash
+### 如果只想当前环境下生效，可以把--global参数去掉
+$ git config --global user.name "你的姓名"        #配置全局用户名
+$ git config --global user.email "你的邮箱"       #配置全局邮箱
 ```
 
 # 创建本地仓库
@@ -23,13 +23,13 @@
   * 用 `git commit` 命令为这一次或者批次的改动做批注
   * 最后就是推送本地仓库中的更新到远程仓库里做同步
 * 具体操作
-```
-  mkdir "项目文件夹"                        # 创建项目文件夹
-  cd "项目文件夹"                           # 切换目录到项目文件夹下
-  git init                                # 初始化本地仓库
-  echo '# 项目名称' > README.md             # 创建项目描述文件
-  git commit -m "这一次或这一批次的操作批注"   # 添加改动批注
-  git push origin master                  # 同步的远程仓库的主分支
+```bash
+  $ mkdir "项目文件夹"                        # 创建项目文件夹
+  $ cd "项目文件夹"                           # 切换目录到项目文件夹下
+  $ git init                                # 初始化本地仓库
+  $ echo '# 项目名称' > README.md             # 创建项目描述文件
+  $ git commit -m "这一次或这一批次的操作批注"   # 添加改动批注
+  $ git push origin master                  # 同步的远程仓库的主分支
 ```
 ps:可以多条add，然后commit一次性提交所有项目，-m后面加的字符串是日志，可以加上改动提示方便阅读，比如，-m "change the first lines"
 
