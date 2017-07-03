@@ -1,12 +1,22 @@
-# 安装
-'''
-    apt-get install git，然后就是用户名和email了
-'''
-* 用户名：git config --global user.name xxxxx
-* email ：git config --global user.email xxxxx
-* _ps：--global参数把所有库都指向这个用户和email，也可以单独让某库指向某用户_
+# 目录
+* [环境配置](#环境配置)
+* [创建本地仓库](#创建本地仓库)
 
-# 初始化：在某个路径下，输入git init就是初始化default的git repository，然后就是add和commit两条指令了，分别是增加项目和提交
+# 环境配置
+* 安装
+```bash
+  sudo apt install git -y
+```
+* 配置用户名和邮箱
+```
+  ## 如果只想当前环境下生效，可以把--global参数去掉
+
+  git config --global user.name "你的姓名"        #配置全局用户名
+  git config --global user.email "你的邮箱"       #配置全局邮箱
+```
+
+# 创建本地仓库
+* 初始化：在某个路径下，输入git init就是初始化default的git repository，然后就是add和commit两条指令了，分别是增加项目和提交
 git init
 git add xxxx.xx
 git commit -m xxxxxxxxx
