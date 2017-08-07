@@ -109,7 +109,7 @@ syl_url_map = [
 python3 main.py
 ```
 然后访问“/api”这个 `URL`，可以看到页面已经返回 `JSON` 数据了
-![](json_data.png)
+![](res/json_data.png)
 
 
 ## 五、总结

@@ -350,15 +350,15 @@ alert('测试JavaScript');
 
 然后运行它，访问“/”这个 `URL` 会发现返回如图 `404` 错误
 
-![](not_found.png)
+![](res/not_found.png)
 
 访问“/index”则会返回“这是一个路由测试页面”
 
-![](test_route.png)
+![](res/test_route.png)
 
 访问“/test/js”，这会弹出一个框，里面内容为“测试JavaScript”
 
-![](test_js.png)
+![](res/test_js.png)
 
 ## 三、总结
 通过本节，我们知道了一个 `Web 框架` 中什么是路由，了解了路由的工作流程，学会了对 `Web 框架` 中路由这个功能的内部内部的实现。

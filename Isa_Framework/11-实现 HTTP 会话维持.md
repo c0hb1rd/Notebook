@@ -542,23 +542,23 @@ python3 main.py
 
 首先访问首页的 `URL`，发现并没有返回首页内容，而是一个登录链接，因为当前会话的 `user` 是空的，所以 `auth_session` 装饰器调用了失败回调函数的结果返回
 
-![](s_index.png)
+![](res/s_index.png)
 
 然后点击登录，返回了登录表单页面
 
-![](s_login.png)
+![](res/s_login.png)
 
 这里我输入“shiyanlou_001”，并提交，页面返回登录成功和一个返回到首页的链接
 
-![](s_login_s.png)
+![](res/s_login_s.png)
 
 这一次再访问首页，可以看到正确的返回了页面内容，并且“你好，shiyanlou_001”中的名字是我刚才输入的那个用户名
 
-![](s_index_r.png)
+![](res/s_index_r.png)
 
 最后测试一下登出，返回登出成功提示，点击返回再次访问首页又出现了登录链接
 
-![](s_logout.png)
+![](res/s_logout.png)
 
 以上就是我们针对会话维持的实战。
 
