@@ -2,12 +2,12 @@
 
 ## 一、实验说明
 ### 1.1 实验内容
-这一章不会太多的知识讲解，因为大部分模块都在对应章节进行过实战了，这个项目是我用这个框架进行开发时的用法，所以专注项目结构，只贴代码不会讲业务逻辑，内容是使用框架实现一个轻量的 `Web` 版微信，实现的功能只有两个，分别是好友列表和自动回复，这个应用命名为 `WRB 自动化平台`，虽然我自己的版本里功能已经包含了非常非常多的模块，但这里只是要教同学们如何取使用这个框架，而且由于在实现过程中还需要读 `itchat` 这个库的源码并且做大量的修改，所以只抽出这两个功能，如果同学们有兴趣，我可以考虑之后再开一个课程来教大家。
+这一章不会太多的知识讲解，因为大部分模块都在对应章节进行过实战了，这个项目是我用这个框架进行开发时的用法，所以专注项目结构，只贴代码不会讲业务逻辑，内容是使用框架实现一个轻量的 `Web` 版微信，实现的功能只有两个，分别是好友列表和自动回复，这个应用命名为 `WRB 自动化平台`，虽然我自己的版本里功能已经包含了非常非常多的模块，但这里只是要教同学们如何取使用这个框架，而且由于在实现过程中还需要读 `itchat` 这个库的源码并且做大量的修改，所以只抽出这两个功能，如果同学们有兴趣，我可以考虑之后再开一个课程来教大家。
 
 ### 1.2 涉及知识点
 * `itchat`
 
-### 1.3 实验环境
+### 1.3 实验环境
 * `Python 3`
 * `Xfce` 终端
 
@@ -20,17 +20,17 @@ sudo pip3 install itchat
 ![](res/wechat.png)
 
 ## 二、需求分析
-说到网页版微信，首先要做的肯定是登录，登录成功之后我们要做的功能只有两个，一个是展示好友列表和自动回复消息，而这两个功能 `itchat` 其实也已经封装好了，我们只需要直接调就行了，下面就先来构建项目结构。
+说到网页版微信，首先要做的肯定是登录，登录成功之后我们要做的功能只有两个，一个是展示好友列表和自动回复消息，而这两个功能 `itchat` 其实也已经封装好了，我们只需要直接调就行了，下面就先来构建项目结构。
 
 ## 三、项目结构
-先看下最终的目录结构
+先看下最终的目录结构
 ```bash
 wechat_robot
 ├── config.py   # 项目配置文件
 ├── controller  # 控制器，每一个控制器都是一个包
 │   ├── action  # action 控制器，下同不再赘述
 │   │   ├── __init__.py # 包文件
-│   │   ├── urls.py     # URL 绑定
+│   │   ├── urls.py     # URL 绑定
 │   │   └── views.py    # 视图逻辑
 │   ├── index
 │   │   ├── __init__.py
@@ -45,9 +45,9 @@ wechat_robot
 │       ├── urls.py
 │       └── views.py
 ├── core    # 核心模块
-│   ├── base_view.py    # 视图模块
+│   ├── base_view.py    # 视图模块
 │   └── wechat_manager.py   # 微信模块
-├── itchat    # itchat 模块，因为有修改源代码，所以直接拷贝副本放在项目里
+├── itchat    # itchat 模块，因为有修改源代码，所以直接拷贝副本放在项目里
 ├── main.py # 应用入口
 ├── message.dict    # 自动回复消息配置文件
 ├── static  # 静态资源文件
@@ -67,14 +67,14 @@ wechat_robot
 ```
 项目构建可能会比较繁琐，因为我的个人习惯就是尽可能分离，还是老槽点，为了后期的修改。
 
-这里面要说的是 `itchat` 这个库要放在应用目录里，因为就这两个功能就对源码做了修改了，而这部分改动不是很大，只是在获取二维码时让它不弹出来而已，所以同学们只要注释掉对应弹出图片的代码就好了，在后面的小节里我会讲具体步骤。
+这里面要说的是 `itchat` 这个库要放在应用目录里，因为就这两个功能就对源码做了修改了，而这部分改动不是很大，只是在获取二维码时让它不弹出来而已，所以同学们只要注释掉对应弹出图片的代码就好了，在后面的小节里我会讲具体步骤。
 
 ## 四、实现两个核心模块
 首先创建好项目之后，我这里项目目录名是 `wechat_robot`，然后把 `itchat` 拷贝当项目目录里
 ```bash
 cp -R /usr/local/lib/python3.5/dist-packages/itchat wechat_robot
 ```
-然后现在 `itchat` 下的 `utils.py` 文件中的 `print_qr` 方法内部内容注释掉
+然后现在 `itchat` 下的 `utils.py` 文件中的 `print_qr` 方法内部内容注释掉
 ，如下
 ```python
 ...
@@ -89,7 +89,7 @@ def print_qr(fileDir):
 '''
 ```
 
-然后再次实现 `base_view.py`，再之前的实验中的那个文件内修改就行，下面是修改之后的 `base_view` 源码
+然后再次实现 `base_view.py`，再之前的实验中的那个文件内修改就行，下面是修改之后的 `base_view` 源码
 ```python
 #!/usr/bin/env python
 # encoding: utf-8
@@ -161,7 +161,7 @@ class SessionView(BaseView):
         # 结合装饰器内部的逻辑，调用继承的子类的 dispatch_request 方法
         return super(SessionView, self).dispatch_request(request, *args, **options)
 ```
-这份代码里面从 `core.wechat_manager` 导入了 `WeChat`，而且为了方便开发，把 `session`、`request` 相关的内容都提前取出来了，在实现 `get` 这种方法时就可以直接用 `self.reqeust` 的方式来获取请求信息了，其它以此类推，下面来看 `core.wechat_manager` 的实现，跟框架的实现关系不大，所以代码不会解释
+这份代码里面从 `core.wechat_manager` 导入了 `WeChat`，而且为了方便开发，把 `session`、`request` 相关的内容都提前取出来了，在实现 `get` 这种方法时就可以直接用 `self.reqeust` 的方式来获取请求信息了，其它以此类推，下面来看 `core.wechat_manager` 的实现，跟框架的实现关系不大，所以代码不会解释
 ```python
 import json
 import os
@@ -275,7 +275,7 @@ class WeChat:
 
 ```
 
-下面就来看看实现 `login` 控制器的登录模块，以此来分析控制器的实现和结构
+下面就来看看实现 `login` 控制器的登录模块，以此来分析控制器的实现和结构
 
 ### 五、控制器分析
 来看看控制器的目录结构
@@ -285,7 +285,7 @@ login
  ├── urls.py
  └── views.py
 ```
-这里是把 `URL` 和视图分开了，先来看看 `__init__.py` 中的代码
+这里是把 `URL` 和视图分开了，先来看看 `__init__.py` 中的代码
 ```python
 from sylfk.view import Controller
 
@@ -306,7 +306,7 @@ url_maps = [
     {'url': '/api/check_login', 'view': views.CheckLogin, 'endpoint': 'check_login'}
 ]
 ```
-可以看到视图和 `URL` 的绑定都写在对应包的 `urls.py` 中，视图则是对应包的 `views.py` 中，做到分离，方便后期修改，最后再看一下 `views.py` 中的代码
+可以看到视图和 `URL` 的绑定都写在对应包的 `urls.py` 中，视图则是对应包的 `views.py` 中，做到分离，方便后期修改，最后再看一下 `views.py` 中的代码
 ```python
 from sylfk import simple_template, render_json, redirect
 from sylfk.session import session
