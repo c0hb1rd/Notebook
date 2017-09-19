@@ -7,4 +7,4 @@
 ## 事件逻辑
 * **Sidebar.js** -- 监听图形组件鼠标事件，核心事件为 `Click` 事件和 `DropStart` 事件，事件最后由 `mxEvent.js` 的 `consume` 方法捕获
 * **mxEvent.js** -- 捕获 `Sidebar` 中图形组件的事件，捕获之后内部触发 `stopPropagation` 方法，该方法为 `DOM` 对象方法，为停止事件传播
-* **mxClient.js** -- 在组件事件停止传播时，会调用内部定义的组件对象 `mxShape` 的 `apply` 方法，方法内部获取当前的组件属性，重新描绘出一个新的图形组件
+* **mxClient.js** -- 在组件事件停止传播时，会调用 `mxClient` 内部定义的组件对象 `mxShape` 的 `apply` 方法，方法内部获取当前的组件属性，重新描绘出一个新的图形组件
